@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dom Movies</title>
+    <link rel="stylesheet" href="./styles/app.css">
+</head>
+<body>
+    <header class="header-container">
+        <h1 class="header-title">Dom Movies</h1>
+       
+        <form class="header-search-form">
+            <input type="text" class="header-search-input" placeholder="Search">
+            <button class="header-search-button">🔍</button>
+        </form>
+
+        <!-- <div class="header-menu">
+            <a href="#" class="header-menu-item">Home</a>
+            <a href="#" class="header-menu-item">Movies</a>
+            <a href="#" class="header-menu-item">TV Shows</a>
+            <a href="#" class="header-menu-item">Actors</a>
+        </div> -->
+    </header>
+
+    <section class="trending-preview-container"> 
+        <div class="trending-preview-header">
+            <h2 class="trending-preview-title">Trending Now</h2>
+            <a href="#" class="trending-preview-view-all">View All</a>
+        </div>
+
+        <article class="trending-preview-movie-list">
+            <div class="movie-container">
+                <img src="https://image.tmdb.org/t/p/w300/adOzdWS35KAo21r9R4BuFCkLer6.jpg" class="movie-img" alt="Movie name">
+                <p class="movie-title">The Old Guard</p>
+                <p class="movie-rating">⭐️ 9.2</p>
+            </div>
+
+            <div class="movie-container">
+                <img src="https://image.tmdb.org/t/p/w300/6CoRTJTmijhBLJTUNoVSUNxZMEI.jpg" class="movie-img" alt="Movie name">
+                <p class="movie-title">The Old Guard</p>
+                <p class="movie-rating">⭐️ 8.1</p>
+            </div>
+
+            <div class="movie-container">
+                <img src="https://image.tmdb.org/t/p/w300/7W0G3YECgDAfnuiHG91r8WqgIOe.jpg" class="movie-img" alt="Movie name">
+                <p class="movie-title">The Old Guard</p>
+                <p class="movie-rating">⭐️ 8.6</p>
+            </div>
+        </article>
+    </section>
+    <section class="categories-preview-container">
+        <h2 class="categories-preview-title">Categories</h2>
+
+        <article class="categories-preview-list">
+            <div class="category-container">
+                <h3 id="" class="category-title">Action</h3>
+            </div>
+
+            <div class="category-container">
+                <h3 id="" class="category-title">Adventure</h3>
+            </div>
+
+            <div class="category-container">
+                <h3 id="" class="category-title">Animation</h3>
+            </div>
+        </article>
+    </section>
+
+    <!-- Start: Generic list -->
+    <!-- End: Generic list -->
+
+    <section class="movie-detail-container">
+        <h1 class="movie-detail-title">The Old Guard</h1>
+        <div class="movie-detail-img-container">
+            <img src="https://image.tmdb.org/t/p/w300/adOzdWS35KAo21r9R4BuFCkLer6.jpg" class="movie-detail-img" alt="Movie name">
+        </div>
+
+        <div class="movie-detail-info-container">
+            <h2 class="movie-detail-title">The Old Guard</h2>
+            <p class="movie-detail-rating">⭐️ 9.2</p>
+            <p class="movie-detail-release-date">Release date: 2020-07-10</p>
+            <p class="movie-detail-overview">Four undying warriors who've secretly protected humanity for centuries become targeted for their mysterious powers just as they discover a new immortal.</p>
+        </div>
+    </section>
+
+    <script type="module" src="./src/main.js"></script>
+</body>
+</html>

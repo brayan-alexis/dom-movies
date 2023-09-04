@@ -1,0 +1,12 @@
+{
+  "name": "dom-movies",
+  "version": "1.0.0",
+  "description": "dom-movies is a modern web-based movie catalog project. Explore a diverse selection of movies, search for specific movie details, and stay updated with the latest cinematic trends.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
