@@ -8,69 +8,98 @@
 </head>
 <body>
     <header class="header-container">
-        <h1 class="header-title">Dom Movies</h1>
+        <div class="header-menu-container">
+            <svg id="" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 50 50" class="header-menu-icon menuSVG">
+                <path d="M 0 9 L 0 11 L 50 11 L 50 9 Z M 0 24 L 0 26 L 50 26 L 50 24 Z M 0 39 L 0 41 L 50 41 L 50 39 Z"></path>
+            </svg>
+
+            <div class="header-menu-list-container inactive">
+                <ul class="header-menu-list">
+                    <li class="header-menu-list-item">Home</li>
+                    <li class="header-menu-list-item">Movies</li>
+                    <li class="header-menu-list-item">TV Shows</li>
+                    <li class="header-menu-list-item">My List</li>
+                </ul>
+
+                <div class="header-menu-divider"></div>
+                
+                <ul class="header-menu-list">
+                    <li class="header-menu-list-item">Action</li>
+                    <li class="header-menu-list-item">Adventure</li>
+                    <li class="header-menu-list-item">Animation</li>
+                    <li class="header-menu-list-item">Comedy</li>
+                    <li class="header-menu-list-item">Crime</li>
+                    <li class="header-menu-list-item">Documentary</li>
+                    <li class="header-menu-list-item">Drama</li>
+                    <li class="header-menu-list-item">Family</li>
+                    <li class="header-menu-list-item">Fantasy</li>
+                    <li class="header-menu-list-item">History</li>
+                    <li class="header-menu-list-item">Horror</li>
+                    <li class="header-menu-list-item">Music</li>
+                    <li class="header-menu-list-item">Mystery</li>
+                    <li class="header-menu-list-item">Romance</li>
+                    <li class="header-menu-list-item">Science Fiction</li>
+                    <li class="header-menu-list-item">TV Movie</li>
+                    <li class="header-menu-list-item">Thriller</li>
+                    <li class="header-menu-list-item">War</li>
+                    <li class="header-menu-list-item">Western</li>
+                </ul>
+
+                <div class="header-menu-divider"></div>
+
+                <ul class="header-menu-list">
+                    <li class="header-menu-list-item">Settings</li>
+                    <li class="header-menu-list-item">Help</li>
+                    <li class="header-menu-list-item">Sign Out</li>
+                </ul>
+            </div>
+        </div> 
+
+        <h1 class="header-title">Movies</h1>
        
         <form class="header-search-form">
-            <input type="text" class="header-search-input" placeholder="Search">
+            <!-- <input type="text" class="header-search-input" placeholder="Search"> -->
             <button class="header-search-button">🔍</button>
         </form>
-
-        <!-- <div class="header-menu">
-            <a href="#" class="header-menu-item">Home</a>
-            <a href="#" class="header-menu-item">Movies</a>
-            <a href="#" class="header-menu-item">TV Shows</a>
-            <a href="#" class="header-menu-item">Actors</a>
-        </div> -->
     </header>
 
-    <section class="trending-preview-container"> 
+    <section id="trendingPreview" class="trending-preview-container"> 
         <div class="trending-preview-header">
             <h2 class="trending-preview-title">Trending Now</h2>
             <a href="#" class="trending-preview-view-all">View All</a>
         </div>
 
         <article class="trending-preview-movie-list">
-            <div class="movie-container">
+            <!-- <div class="movie-container">
                 <img src="https://image.tmdb.org/t/p/w300/adOzdWS35KAo21r9R4BuFCkLer6.jpg" class="movie-img" alt="Movie name">
                 <p class="movie-title">The Old Guard</p>
                 <p class="movie-rating">⭐️ 9.2</p>
-            </div>
-
-            <div class="movie-container">
-                <img src="https://image.tmdb.org/t/p/w300/6CoRTJTmijhBLJTUNoVSUNxZMEI.jpg" class="movie-img" alt="Movie name">
-                <p class="movie-title">The Old Guard</p>
-                <p class="movie-rating">⭐️ 8.1</p>
-            </div>
-
-            <div class="movie-container">
-                <img src="https://image.tmdb.org/t/p/w300/7W0G3YECgDAfnuiHG91r8WqgIOe.jpg" class="movie-img" alt="Movie name">
-                <p class="movie-title">The Old Guard</p>
-                <p class="movie-rating">⭐️ 8.6</p>
-            </div>
+            </div> -->
         </article>
     </section>
-    <section class="categories-preview-container">
-        <h2 class="categories-preview-title">Categories</h2>
 
-        <article class="categories-preview-list">
-            <div class="category-container">
-                <h3 id="" class="category-title">Action</h3>
+    <section id="genresPreview" class="genres-preview-container">
+        <h2 class="genres-preview-title">Genres</h2>
+
+        <article class="genres-preview-list">
+            <!-- <div class="genre-container">
+                <h3 id="" class="genre-title">Action</h3>
             </div>
 
-            <div class="category-container">
-                <h3 id="" class="category-title">Adventure</h3>
+            <div class="genre-container">
+                <h3 id="" class="genre-title">Adventure</h3>
             </div>
 
-            <div class="category-container">
-                <h3 id="" class="category-title">Animation</h3>
-            </div>
+            <div class="genre-container">
+                <h3 id="" class="genre-title">Animation</h3>
+            </div> -->
         </article>
     </section>
 
     <!-- Start: Generic list -->
     <!-- End: Generic list -->
 
-    <section class="movie-detail-container">
+    <section class="movie-detail-container inactive">
         <h1 class="movie-detail-title">The Old Guard</h1>
         <div class="movie-detail-img-container">
             <img src="https://image.tmdb.org/t/p/w300/adOzdWS35KAo21r9R4BuFCkLer6.jpg" class="movie-detail-img" alt="Movie name">
@@ -84,6 +113,7 @@
         </div>
     </section>
 
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script type="module" src="./src/main.js"></script>
 </body>
 </html>
