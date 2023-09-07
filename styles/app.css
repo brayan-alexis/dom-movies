@@ -26,6 +26,7 @@
 
 html {
     background-color: var(--midnight-blue);
+    /* background-color: var(--eerie-black); */
 }
 
 body {
@@ -35,7 +36,7 @@ body {
     font-family: var(--font-family-text);
     font-weight: var(--font-weight-text1);
     color: var(--white);
-    background-color: var(--midnight-blue);
+    /* background-color: var(--midnight-blue); */
 }
 
 /* Header */
@@ -45,8 +46,13 @@ body {
     justify-content: space-between;
     align-items: center;
     padding: 1rem;
-    background-color: var(--midnight-blue);
+    margin: 0 1rem;
+    /* background-color: var(--midnight-blue); */
     border-bottom: 1px solid var(--tangerine);
+}
+.header-arrow {
+    width: 2rem; /* 32px */
+    height:2rem; /* 32px */
 }
 .header-menu-icon {
     width: 1.5rem; /* 24px */
@@ -95,30 +101,40 @@ body {
 
 /* Trending */
 .trending-preview-container {
-    display: flex;
+    /* display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    align-items: center;
-    margin: 1rem;
-    padding: 1rem;
-    background-color: var(--midnight-blue);
-    border: 1px solid var(--tangerine);
+    align-items: center; */
+    margin: 0.5rem;
+    padding: 0.5rem;
+    /* background-color: var(--midnight-blue);
+    border: 1px solid var(--tangerine); */
 }
 .trending-preview-header {
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
-    margin: 0;
-    padding: 0;
+    padding: 1rem 0 0 0;
+}
+.trending-preview-header .trending-preview-title {
+    /* font-family: var(--font-family-titles);
+    font-weight: var(--font-weight-title2);
+    font-size: 1.25rem;
+    color: var(--white); */
+    margin: 0 0.5rem;
+}
+.trending-preview-header .trending-preview-view-all {
+    margin: 0 0.5rem;
+    color: gray;
 }
 .trending-preview-movie-list {
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
-    align-items: center;
+    align-items: flex-start;
     margin: 0;
-    padding: 0;
+    padding: 1rem 0;
     overflow-x: scroll;
     overflow-y: hidden;
     width: 100%;
@@ -127,6 +143,28 @@ body {
 .trending-preview-movie-list .movie-card {
     margin: 0 0.5rem;
     padding: 0;
+    width: 150px;
+    min-width: 150px;
+    max-width: 150px;
+}
+.movie-img {
+    height: 225px;
+    min-height: 225px;
+    max-height: 225px;
+    width: 150px;
+    min-width: 150px;
+    max-width: 150px;
+    border-radius: 1rem;
+}
+.movie-title {
+    /* font-family: var(--font-family-titles);
+    font-weight: var(--font-weight-title2); */
+    font-size: 1rem; /* 16px */
+    /* color: var(--white); */
+    margin: 0.5rem 0 ;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 /* Genres */
@@ -176,6 +214,7 @@ body {
     }
 }
 
+/* Pending!!!! */
 .scale-up-vertical-top {
     animation: scale-up-vertical-top 0.2s linear
 }

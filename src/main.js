@@ -1,4 +1,9 @@
 import { API_KEY } from "./secrets.js";
+export { getTrendingMoviesPreview, getGenresPreview };
+
+window.addEventListener('load', getGenres, false); // Load the genres in the menu
+
+const ce = (element) => document.createElement(element); // ce = Create element
 
 const api = axios.create({
     baseURL: "https://api.themoviedb.org/3",
@@ -34,24 +39,29 @@ async function getTrendingMoviesPreview() {
     movies.forEach((movie) => {
         const trendingPreviewMovieList = document.querySelector("#trendingPreview .trending-preview-movie-list");
 
-        const movieCard = document.createElement("div");
+        const movieCard = ce("div");
         movieCard.classList.add("movie-card");
 
-        const movieImg = document.createElement("img");
+        const movieImg = ce("img");
         movieImg.classList.add("movie-img");
         movieImg.alt = movie.title;
         movieImg.src = `https://image.tmdb.org/t/p/w300${movie.poster_path}`;
         movieCard.appendChild(movieImg);
 
-        const movieTitle = document.createElement("h3");
+        const movieTitle = ce("h3");
         movieTitle.classList.add("movie-title");
         movieTitle.textContent = movie.title;
         movieCard.appendChild(movieTitle);
 
-        const movieVoteAvg = document.createElement("p");
-        movieVoteAvg.classList.add("movie-vote-avg");
-        movieVoteAvg.textContent = `⭐ ${movie.vote_average}`;
-        movieCard.appendChild(movieVoteAvg);
+        // const movieVoteAvg = ce("p");
+        // movieVoteAvg.classList.add("movie-vote-avg");
+        // movieVoteAvg.textContent = `⭐ ${movie.vote_average}`;
+        // movieCard.appendChild(movieVoteAvg);
+
+        const movieReleaseDate = ce("p");
+        movieReleaseDate.classList.add("movie-release-date");
+        movieReleaseDate.textContent = `📅 ${movie.release_date}`;
+        movieCard.appendChild(movieReleaseDate);
         
         trendingPreviewMovieList.appendChild(movieCard);
     });
@@ -60,15 +70,15 @@ async function getTrendingMoviesPreview() {
 async function getGenresPreview() {
     const { data } = await api("/genre/movie/list");
     const genres = data.genres;
-    console.log({data, genres});
+    // console.log({data, genres});
 
     genres.forEach((genre) => {
         const trendingPreviewMovieList = document.querySelector("#genresPreview .genres-preview-list");
 
-        const genreContainer = document.createElement("div");
+        const genreContainer = ce("div");
         genreContainer.classList.add("genre-container");
 
-        const genreTitle = document.createElement("h3");
+        const genreTitle = ce("h3");
         genreTitle.classList.add("genre-title");
         genreTitle.setAttribute("id", genre.id);
         const genreTitleText = document.createTextNode(genre.name);
@@ -80,5 +90,18 @@ async function getGenresPreview() {
     });
 }
 
-getTrendingMoviesPreview();
-getGenresPreview();
+async function getGenres() {
+    const { data } = await api("/genre/movie/list");
+    const genres = data.genres;
+    
+    genres.forEach((genre) => {
+        const genreList = document.querySelector(".header-menu-genres-list");
+        
+        const genreListItem = ce("li");
+        genreListItem.classList.add("header-menu-list-item");
+        genreListItem.textContent = genre.name;
+        genreList.appendChild(genreListItem);
+
+    });
+}
+// getGenres();
