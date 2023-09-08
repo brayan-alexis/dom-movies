@@ -10,12 +10,6 @@
 <body>
     <header id="header" class="header-container">
         <div class="header-menu-container">
-            <svg xmlns="http://www.w3.org/2000/svg" class="header-arrow inactive" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                <path d="M13 15l-3 -3l3 -3"></path>
-                <path d="M21 12a9 9 0 1 0 -18 0a9 9 0 0 0 18 0z"></path>
-            </svg>
-
             <svg id="" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 50 50" class="header-menu-icon menuSVG">
                 <path d="M 0 9 L 0 11 L 50 11 L 50 9 Z M 0 24 L 0 26 L 50 26 L 50 24 Z M 0 39 L 0 41 L 50 41 L 50 39 Z"></path>
             </svg>
@@ -46,16 +40,21 @@
             </div>
         </div> 
 
-        <h1 class="header-title">Movies</h1>
-       
-        <form class="header-search-form">
-            <!-- <input type="text" class="header-search-input" placeholder="Search"> -->
-            <!-- <button class="header-search-button">🔍</button> -->
-            <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="24" height="24" viewBox="0,0,256,256">
-                <g fill="#ffffff" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><g transform="scale(5.12,5.12)"><path d="M21,3c-9.39844,0 -17,7.60156 -17,17c0,9.39844 7.60156,17 17,17c3.35547,0 6.46094,-0.98437 9.09375,-2.65625l12.28125,12.28125l4.25,-4.25l-12.125,-12.09375c2.17969,-2.85937 3.5,-6.40234 3.5,-10.28125c0,-9.39844 -7.60156,-17 -17,-17zM21,7c7.19922,0 13,5.80078 13,13c0,7.19922 -5.80078,13 -13,13c-7.19922,0 -13,-5.80078 -13,-13c0,-7.19922 5.80078,-13 13,-13z"></path></g></g>
-            </svg>
-        </form>
+        <h1 class="header-title">Dom Movies</h1>
+
+        <p>🔎</p>
     </header>
+
+    <section class="search-section">
+        <form class="search-form">
+            <input type="text" class="search-form-input" placeholder="Search">
+            <button id="searchBtn" class="search-form-button">
+                <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="24" height="24" viewBox="0,0,256,256">
+                    <g fill="#ffffff" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><g transform="scale(5.12,5.12)"><path d="M21,3c-9.39844,0 -17,7.60156 -17,17c0,9.39844 7.60156,17 17,17c3.35547,0 6.46094,-0.98437 9.09375,-2.65625l12.28125,12.28125l4.25,-4.25l-12.125,-12.09375c2.17969,-2.85937 3.5,-6.40234 3.5,-10.28125c0,-9.39844 -7.60156,-17 -17,-17zM21,7c7.19922,0 13,5.80078 13,13c0,7.19922 -5.80078,13 -13,13c-7.19922,0 -13,-5.80078 -13,-13c0,-7.19922 5.80078,-13 13,-13z"></path></g></g>
+                </svg>
+            </button>
+        </form>
+    </section>
 
     <section id="trendingPreview" class="trending-preview-container"> 
         <div class="trending-preview-header">
@@ -94,7 +93,8 @@
     <!-- End: Generic list -->
 
     <section class="movie-detail-container inactive">
-        <h1 class="movie-detail-title">The Old Guard</h1>
+        <!-- <h1 class="movie-detail-title">The Old Guard</h1> -->
+
         <div class="movie-detail-img-container">
             <img src="https://image.tmdb.org/t/p/w300/adOzdWS35KAo21r9R4BuFCkLer6.jpg" class="movie-detail-img" alt="Movie name">
         </div>
@@ -104,6 +104,26 @@
             <p class="movie-detail-rating">⭐️ 9.2</p>
             <p class="movie-detail-release-date">Release date: 2020-07-10</p>
             <p class="movie-detail-overview">Four undying warriors who've secretly protected humanity for centuries become targeted for their mysterious powers just as they discover a new immortal.</p>
+        </div>
+
+        <div class="movie-favorite-container">
+            <!-- <button class="movie-favorite-button">⭐️</button> -->
+            <svg xmlns="http://www.w3.org/2000/svg" class="movie-favorite-button" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                <path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z"></path>
+             </svg>
+        </div>
+
+        <div class="arrow-back-container inactive">
+            <svg class="arrow-back" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                <path d="M15 6l-6 6l6 6"></path>
+             </svg>
+            <!-- <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                <path d="M13 15l-3 -3l3 -3"></path>
+                <path d="M21 12a9 9 0 1 0 -18 0a9 9 0 0 0 18 0z"></path>
+            </svg> -->
         </div>
     </section>
  
