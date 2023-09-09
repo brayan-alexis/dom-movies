@@ -42,18 +42,27 @@
 
         <h1 class="header-title">Dom Movies</h1>
 
-        <p>🔎</p>
+        <p>⭐</p>
     </header>
 
     <section class="search-section">
         <form class="search-form">
-            <input type="text" class="search-form-input" placeholder="Search">
+            <input id="seachFormInput" type="text" class="search-form-input" placeholder="Search">
             <button id="searchBtn" class="search-form-button">
                 <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="24" height="24" viewBox="0,0,256,256">
                     <g fill="#ffffff" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><g transform="scale(5.12,5.12)"><path d="M21,3c-9.39844,0 -17,7.60156 -17,17c0,9.39844 7.60156,17 17,17c3.35547,0 6.46094,-0.98437 9.09375,-2.65625l12.28125,12.28125l4.25,-4.25l-12.125,-12.09375c2.17969,-2.85937 3.5,-6.40234 3.5,-10.28125c0,-9.39844 -7.60156,-17 -17,-17zM21,7c7.19922,0 13,5.80078 13,13c0,7.19922 -5.80078,13 -13,13c-7.19922,0 -13,-5.80078 -13,-13c0,-7.19922 5.80078,-13 13,-13z"></path></g></g>
                 </svg>
             </button>
         </form>
+
+        <div class="search-results-container inactive">
+            <div class="search-results-list">
+                <!-- <div class="search-result-container">
+                    <img src="https://image.tmdb.org/t/p/w300/adOzdWS35KAo21r9R4BuFCkLer6.jpg" class="search-result-img" alt="Movie name">
+                    <p class="search-result-title">The Old Guard</p>
+                </div> -->
+            </div>
+        </div>
     </section>
 
     <section id="trendingPreview" class="trending-preview-container"> 
@@ -71,39 +80,74 @@
         </article>
     </section>
 
+    <!-- Start: Popular -->
+    <!-- End: Generic list -->
+
     <section id="genresPreview" class="genres-preview-container inactive">
         <h2 class="genres-preview-title">Genres</h2>
 
         <article class="genres-preview-list">
             <!-- <div class="genre-container">
                 <h3 id="" class="genre-title">Action</h3>
-            </div>
-
-            <div class="genre-container">
-                <h3 id="" class="genre-title">Adventure</h3>
-            </div>
-
-            <div class="genre-container">
-                <h3 id="" class="genre-title">Animation</h3>
             </div> -->
         </article>
     </section>
 
+    <section id="genre" class="genre-container inactive">
+        <h2 class="genre-title">Genres</h2>
+
+        <div class="genre-movies-list">
+            <!-- <a href="">
+                <img src="https://image.tmdb.org/t/p/w300/adOzdWS35KAo21r9R4BuFCkLer6.jpg" class="genre-movie-img" alt="">
+                <h3 class="genre-movie-title">The Old Guard</h3>
+            </a>
+            <a href="">
+                <img src="https://image.tmdb.org/t/p/w300/6CoRTJTmijhBLJTUNoVSUNxZMEI.jpg" class="genre-movie-img" alt="">
+                <h3 class="genre-movie-title">Pirates</h3>
+            </a>
+            <a href="">
+                <img src="https://image.tmdb.org/t/p/w300/7D430eqZj8y3oVkLFfsWXGRcpEG.jpg" class="genre-movie-img" alt="">
+                <h3 class="genre-movie-title">Cometa</h3>
+            </a>
+            <a href="">
+                <img src="https://image.tmdb.org/t/p/w300/6CoRTJTmijhBLJTUNoVSUNxZMEI.jpg" class="genre-movie-img" alt="">
+                <h3 class="genre-movie-title">Pirates</h3>
+            </a> -->
+
+            <!-- <div class="arrow-back-container inactive">
+                <svg class="arrow-back" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                    <path d="M15 6l-6 6l6 6"></path>
+                 </svg>
+            </div> -->
+        </div>
+    </section>
+
     <!-- Start: Generic list -->
+    <section id="genericList" class="generic-container inactive">
+        <h2 class="generic-movie-title">Movies</h2>
+
+        <div class="generic-movie-list">
+            <!-- <div class="generic-list-item-container">
+                <img src="https://image.tmdb.org/t/p/w300/adOzdWS35KAo21r9R4BuFCkLer6.jpg" class="generic-list-item-img" alt="Movie name">
+                <p class="generic-list-item-title">The Old Guard</p>
+            </div> -->      
+        </div>
+    </section>
     <!-- End: Generic list -->
 
     <section class="movie-detail-container inactive">
         <!-- <h1 class="movie-detail-title">The Old Guard</h1> -->
 
         <div class="movie-detail-img-container">
-            <img src="https://image.tmdb.org/t/p/w300/adOzdWS35KAo21r9R4BuFCkLer6.jpg" class="movie-detail-img" alt="Movie name">
+            <!-- <img src="https://image.tmdb.org/t/p/w300/adOzdWS35KAo21r9R4BuFCkLer6.jpg" class="movie-detail-img" alt="Movie name"> -->
         </div>
 
         <div class="movie-detail-info-container">
-            <h2 class="movie-detail-title">The Old Guard</h2>
+            <!-- <h2 class="movie-detail-title">The Old Guard</h2>
             <p class="movie-detail-rating">⭐️ 9.2</p>
             <p class="movie-detail-release-date">Release date: 2020-07-10</p>
-            <p class="movie-detail-overview">Four undying warriors who've secretly protected humanity for centuries become targeted for their mysterious powers just as they discover a new immortal.</p>
+            <p class="movie-detail-overview">Four undying warriors who've secretly protected humanity for centuries become targeted for their mysterious powers just as they discover a new immortal.</p> -->
         </div>
 
         <div class="movie-favorite-container">

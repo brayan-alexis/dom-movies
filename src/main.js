@@ -1,7 +1,7 @@
 import { API_KEY } from "./secrets.js";
-export { getTrendingMoviesPreview, getGenresPreview };
+export { getTrendingMoviesPreview, getGenresPreview, getMoviesByGenre, getMoviesBySearch, getMovieDetails };
 
-window.addEventListener('load', getGenres, false); // Load the genres in the menu
+window.addEventListener('load', getGenresInMenu, false); // Load the genres in the menu
 
 const ce = (element) => document.createElement(element); // ce = Create element
 
@@ -31,6 +31,60 @@ svgElement.addEventListener('click', () => {
     }, 500); // 500 milliseconds = 0.5 seconds
 });
 
+// Utils
+// async function getElementsAndFillList(path, parentElement, optionalConfig = {}) {
+//     const { data } = await api(path, optionalConfig);
+//     const elements = data.results;
+//     // console.log({data, elements});
+
+//     elements.forEach((element) => {
+//         const elementContainer = ce("div");
+//         elementContainer.classList.add("element-container");
+
+//         const elementImg = ce("img");
+//         elementImg.classList.add("element-img");
+//         elementImg.alt = element.title;
+//         elementImg.src = `https://image.tmdb.org/t/p/w300${element.poster_path}`;
+//         elementContainer.appendChild(elementImg);
+
+//         const elementTitle = ce("h3");
+//         elementTitle.classList.add("element-title");
+//         elementTitle.textContent = element.title;
+//         elementContainer.appendChild(elementTitle);
+
+//         const elementReleaseDate = ce("p");
+//         elementReleaseDate.classList.add("element-release-date");
+//         elementReleaseDate.textContent = `📅 ${element.release_date}`;
+//         elementContainer.appendChild(elementReleaseDate);
+        
+//         parentElement.appendChild(elementContainer);
+//     });
+// }
+
+async function createGenericMovies(movies, parentElement) {
+    movies.forEach((movie) => {
+        const movieCard = ce("div");
+        movieCard.classList.add("movie-card");
+
+        const movieImg = ce("img");
+        movieImg.classList.add("movie-img");
+        movieImg.alt = movie.title;
+        movieImg.src = `https://image.tmdb.org/t/p/w300${movie.poster_path}`;
+        movieImg.addEventListener('click', () => {
+            location.hash = `#movie=${movie.id}`;
+        });
+        movieCard.appendChild(movieImg);
+
+        const movieTitle = ce("h3");
+        movieTitle.classList.add("movie-title");
+        movieTitle.textContent = movie.title;
+        movieCard.appendChild(movieTitle);
+        
+        parentElement.appendChild(movieCard);
+    } );
+}
+
+// Call to API
 async function getTrendingMoviesPreview() {
     const { data } = await api("/trending/movie/day");
     const movies = data.results;
@@ -46,17 +100,15 @@ async function getTrendingMoviesPreview() {
         movieImg.classList.add("movie-img");
         movieImg.alt = movie.title;
         movieImg.src = `https://image.tmdb.org/t/p/w300${movie.poster_path}`;
+        movieImg.addEventListener('click', () => {
+            location.hash = `#movie=${movie.id}`;
+        });
         movieCard.appendChild(movieImg);
 
         const movieTitle = ce("h3");
         movieTitle.classList.add("movie-title");
         movieTitle.textContent = movie.title;
         movieCard.appendChild(movieTitle);
-
-        // const movieVoteAvg = ce("p");
-        // movieVoteAvg.classList.add("movie-vote-avg");
-        // movieVoteAvg.textContent = `⭐ ${movie.vote_average}`;
-        // movieCard.appendChild(movieVoteAvg);
 
         const movieReleaseDate = ce("p");
         movieReleaseDate.classList.add("movie-release-date");
@@ -86,11 +138,10 @@ async function getGenresPreview() {
         genreTitle.appendChild(genreTitleText);
         genreContainer.appendChild(genreTitle);
         trendingPreviewMovieList.appendChild(genreContainer);
-            
     });
 }
 
-async function getGenres() {
+async function getGenresInMenu() {
     const { data } = await api("/genre/movie/list");
     const genres = data.genres;
     
@@ -99,9 +150,109 @@ async function getGenres() {
         
         const genreListItem = ce("li");
         genreListItem.classList.add("header-menu-list-item");
-        genreListItem.textContent = genre.name;
+        genreListItem.textContent = genre.name; 
+        genreListItem.setAttribute("id", genre.id);
+        genreListItem.addEventListener('click', () => {
+            location.hash = `#genre=${genre.id}_${genre.name}`;
+        });
         genreList.appendChild(genreListItem);
 
     });
 }
-// getGenres();
+
+async function getMoviesByGenre(genreId) {
+    const { data } = await api('/discover/movie', {
+        params: {
+            with_genres: genreId,
+        }
+    });
+    
+    const movies = data.results;
+    // console.log({data, movies});
+
+    // createGenericMovies(movies, genericMovieList);
+    movies.forEach((movie) => {
+        const movieCard = ce("div");
+        movieCard.classList.add("movie-card");
+
+        const movieImg = ce("img");
+        movieImg.classList.add("movie-img");
+        movieImg.alt = movie.title;
+        movieImg.src = `https://image.tmdb.org/t/p/w300${movie.poster_path}`;
+        movieImg.addEventListener('click', () => {
+            location.hash = `#movie=${movie.id}`;
+        });
+        movieCard.appendChild(movieImg);
+
+        const movieTitle = ce("h3");
+        movieTitle.classList.add("movie-title");
+        movieTitle.textContent = movie.title;
+        movieCard.appendChild(movieTitle);
+        
+        const genreSection = document.querySelector("#genre .genre-movies-list");
+        genreSection.appendChild(movieCard);
+    });
+}
+
+async function getMoviesBySearch(searchQuery) {
+    searchQuery = decodeURI(searchQuery);
+    const { data } = await api('/search/movie', {
+        params: {
+            query: searchQuery,
+        }
+    });
+    
+    const movies = data.results;
+
+    createGenericMovies(movies, genericMovieList);
+
+    // movies.forEach((movie) => {
+    //     const movieCard = ce("div");
+    //     movieCard.classList.add("movie-card");
+
+    //     const movieImg = ce("img");
+    //     movieImg.classList.add("movie-img");
+    //     movieImg.alt = movie.title;
+    //     movieImg.src = `https://image.tmdb.org/t/p/w300${movie.poster_path}`;
+    //     movieCard.appendChild(movieImg);
+
+    //     const movieTitle = ce("h3");
+    //     movieTitle.classList.add("movie-title");
+    //     movieTitle.textContent = movie.title;
+    //     movieCard.appendChild(movieTitle);
+
+    //     searchResultsList.appendChild(movieCard);
+    // });
+}
+
+async function getMovieDetails(movieId) {
+    const { data } = await api(`/movie/${movieId}`);
+    const movie = data;
+    console.log({data, movie});
+
+    const movieDetailImg = ce("img");
+    movieDetailImg.classList.add("movie-detail-img");
+    movieDetailImg.alt = movie.title;
+    movieDetailImg.src = `https://image.tmdb.org/t/p/w300${movie.poster_path}`;
+    movieDetailImgContainer.appendChild(movieDetailImg);
+
+    const movieDetailTitle = ce("h2");
+    movieDetailTitle.classList.add("movie-detail-title");
+    movieDetailTitle.textContent = movie.title;
+    movieDetailInfoContainer.appendChild(movieDetailTitle);
+    
+    const movieDetailRating = ce("p");
+    movieDetailRating.classList.add("movie-detail-rating");
+    movieDetailRating.textContent = `⭐ ${movie.vote_average}`;
+    movieDetailInfoContainer.appendChild(movieDetailRating);
+    
+    const movieDetailReleaseDate = ce("p");
+    movieDetailReleaseDate.classList.add("movie-detail-release-date");
+    movieDetailReleaseDate.textContent = `📅 ${movie.release_date}`;
+    movieDetailInfoContainer.appendChild(movieDetailReleaseDate);
+
+    const movieDetailOverview = ce("p");
+    movieDetailOverview.classList.add("movie-detail-overview");
+    movieDetailOverview.textContent = movie.overview;
+    movieDetailInfoContainer.appendChild(movieDetailOverview);
+}
