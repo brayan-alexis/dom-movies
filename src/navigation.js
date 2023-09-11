@@ -1,18 +1,35 @@
 import { 
     getTrendingMoviesPreview, 
-    getGenresPreview, 
+    getGenresPreview,
+    getTrendingMovies, 
     getMoviesByGenre, 
     getMoviesBySearch,
     getMovieDetails
 } from './main.js';
 
-searchFormBtn.addEventListener('click', (event) => {
-    // event.preventDefault();
-    location.hash = `#search=${searchFormInput.value}`;
-});
-arrowBack.addEventListener('click', (event) => {
-    event.preventDefault();
+headerTitle.addEventListener('click', () => {
     location.hash = '';
+});
+arrowBack.addEventListener('click', () => {
+    // event.preventDefault();
+    // location.hash = '';
+
+    console.log('hi');
+    // Get the URL of the previous page
+    const previousUrl = document.referrer;
+
+    // Check if the previous URL belongs to the same application
+    if (previousUrl.includes(location.hostname)) {
+        // If it does, go back to the previous URL
+        history.back();
+    } else {
+        // If it doesn't belong to the same application, redirect to the application's home
+        window.location.href = '/'; // Replace '/' with the URL of your home page
+    }
+});
+searchFormBtn.addEventListener('click', (event) => {
+    event.preventDefault();
+    location.hash = `#search=${searchFormInput.value}`;
 });
 
 window.addEventListener('load', navigator, false);
@@ -35,19 +52,16 @@ function homePage() {
     // Header
     headerSection.classList.remove('inactive');
     arrowBack.classList.add('inactive');
-    headerTitle.classList.remove('inactive');
-    // headerGenreTitle.classList.add('inactive');
     searchForm.classList.remove('inactive');
     
     // Trending movies
     trendingPreviewSection.classList.remove('inactive');
-    // trendingPreviewMovieList.classList.remove('inactive');
 
     // Movie details
     movieDetailSection.classList.add('inactive');
 
-    // Genre page
-    genreSection.classList.add('inactive');
+    // Genres preview
+    genresPreviewSection.classList.remove('inactive');
 
     // Generic
     genericList.classList.add('inactive');
@@ -63,26 +77,35 @@ function homePage() {
 function trendsPage() {
     console.log('Trends page');
 
-    // // Header
-    // headerSection.classList.remove('inactive');
-    // arrowBack.classList.remove('inactive');
-    // headerTitle.classList.remove('inactive');
-    // // headerGenreTitle.classList.add('inactive');
-
-    // // Trending movies
-    // trendingPreviewSection.classList.remove('inactive');
-    // // trendingPreviewMovieList.classList.remove('inactive');
-
-    // // Movie details
-    // movieDetailSection.classList.add('inactive');
-
-    // // Genre page
-    // genreSection.classList.add('inactive');
-
-    // // Generic
-    // genericList.classList.add('inactive');
+    // Header
+    headerSection.classList.remove('inactive');
+    arrowBack.classList.remove('inactive');
+    searchForm.classList.add('inactive');
     
-    // getMovieDetails();
+    // Trending movies
+    trendingPreviewSection.classList.add('inactive');
+
+    // Movie details
+    movieDetailSection.classList.add('inactive');
+
+    // Genres preview
+    genresPreviewSection.classList.add('inactive');
+
+    // Generic
+    genericList.classList.remove('inactive');
+
+    // Check if the trending movies preview is empty and if so, get the data from the API
+    const childrenCategoriesPreview = Array.from(genericMovieList.children);
+    if (!childrenCategoriesPreview.length){
+        getTrendingMovies();
+    } else {
+        // Remove the movies from the previous category
+        childrenCategoriesPreview.forEach((child) => {
+            child.remove();
+        });
+        // Get the movies from the new category
+        getTrendingMovies();
+    }
 }
 
 function searchPage() {
@@ -91,7 +114,6 @@ function searchPage() {
     // Header
     headerSection.classList.remove('inactive');
     arrowBack.classList.remove('inactive');
-    // headerGenreTitle.classList.add('inactive');
     searchForm.classList.remove('inactive');
 
     // Trending movies
@@ -100,19 +122,16 @@ function searchPage() {
     // Movie details
     movieDetailSection.classList.add('inactive');
 
-    // Genre page
-    genreSection.classList.add('inactive');
-
-    // Search
-    // searchResultsContainer.classList.remove('inactive');
+    // Genres preview
+    genresPreviewSection.classList.add('inactive');
 
     // Generic
     genericList.classList.remove('inactive');
 
     // Get the search query from the hash
     const searchQuery = decodeURI(location.hash.split('=')[1]);
-    genericMovieTitle.textContent = `Search results for "${searchQuery}"`;
-    searchFormInput.value = searchQuery;
+    // const searchQuery = searchFormInput.value;
+    // searchFormInput.value = searchQuery;
     getMoviesBySearch(searchQuery);
 }
 
@@ -122,25 +141,22 @@ function movieDetailsPage() {
     // Header
     headerSection.classList.add('inactive');
     arrowBack.classList.remove('inactive');
-    // headerGenreTitle.classList.add('inactive');
     searchForm.classList.add('inactive');
 
     // Trending movies
     trendingPreviewSection.classList.add('inactive');
-    // trendingPreviewMovieList.classList.add('inactive');
 
     // Movie details
     movieDetailSection.classList.remove('inactive');
 
-    // Genre page
-    genreSection.classList.add('inactive');
+    // Genres preview
+    genresPreviewSection.classList.add('inactive');
 
     // Generic
     genericList.classList.add('inactive');
 
     // Get the movie id from the hash
     const movieId = location.hash.split('=')[1];
-    // getMovieDetails(movieId);
 
     // Check if the movie details are empty and if so, get the data from the API
     const childrenMovieDetails = Array.from(movieDetailInfoContainer.children);
@@ -167,35 +183,26 @@ function genrePage() {
     headerSection.classList.remove('inactive');
     headerMenuListContainer.classList.add("inactive");
     arrowBack.classList.remove('inactive');
-    // headerGenreTitle.classList.remove('inactive');
     searchForm.classList.add('inactive');
-
-    // Search
-    searchResultsContainer.classList.add('inactive');
     
     // Trending movies
     trendingPreviewSection.classList.add('inactive');
-    
-    // Genre page
-    genreSection.classList.remove('inactive');
 
     // Movie details
     movieDetailSection.classList.add('inactive');
 
-    // Generic
-    // genericList.classList.remove('inactive');
-    genericList.classList.add('inactive');
+    // Genres preview
+    genresPreviewSection.classList.add('inactive');
 
-    // const genreId = location.hash.split('=')[1].split('_')[0]; // Get the genre id from the hash
-    // const genreTitle = location.hash.split('=')[1].split('_')[1]; // Get the genre title from the hash
+    // Generic
+    genericList.classList.remove('inactive');
+
     const [genreId, genreTitle] = location.hash.split('=')[1].split('_'); // Get the genre id and title from the hash
 
-    headerGenreTitle.textContent = genreTitle; // Set the genre title in the header
-
-    // console.log({genreId});
+    genericMovieTitle.textContent = genreTitle; // Set the genre title in the header
 
     // Check if the genre page is empty and if so, get the data from the API
-    const childrenGenrePage = Array.from(genreMoviesList.children);
+    const childrenGenrePage = Array.from(genericMovieList.children);
     if (!childrenGenrePage.length){
         getMoviesByGenre(genreId);
     } else {

@@ -1,5 +1,12 @@
 import { API_KEY } from "./secrets.js";
-export { getTrendingMoviesPreview, getGenresPreview, getMoviesByGenre, getMoviesBySearch, getMovieDetails };
+export { 
+    getTrendingMoviesPreview, 
+    getGenresPreview,
+    getTrendingMovies, 
+    getMoviesByGenre, 
+    getMoviesBySearch, 
+    getMovieById as getMovieDetails 
+};
 
 window.addEventListener('load', getGenresInMenu, false); // Load the genres in the menu
 
@@ -18,7 +25,6 @@ const api = axios.create({
 // Get the SVG element and the menu list container
 const svgElement = document.querySelector(".menuSVG");
 const headerMenuListContainer = document.querySelector(".header-menu-list-container");
-
 // Show menu on click
 svgElement.addEventListener('click', () => {
     svgElement.classList.add('jello-horizontal'); // Add the animation class
@@ -90,19 +96,27 @@ async function getTrendingMoviesPreview() {
     const movies = data.results;
     console.log({data, movies});
 
-    movies.forEach((movie) => {
-        const trendingPreviewMovieList = document.querySelector("#trendingPreview .trending-preview-movie-list");
+    const trendingPreviewMovieList = document.querySelector("#trendingPreview .trending-preview-movie-list");
 
+    // Add onlick event to the movie cards
+    trendingPreviewMovieList.addEventListener('click', (event) => {
+        const movieCard = event.target.closest(".movie-img"); // Find the closest ancestor that matches the selector
+
+        if (movieCard) {
+            const movieId = movieCard.dataset.movieId; // Get the movie ID from the data attribute
+            location.hash = `#movie=${movieId}`;
+        }
+    });
+
+    movies.forEach((movie) => {
         const movieCard = ce("div");
         movieCard.classList.add("movie-card");
-
+        
         const movieImg = ce("img");
         movieImg.classList.add("movie-img");
         movieImg.alt = movie.title;
         movieImg.src = `https://image.tmdb.org/t/p/w300${movie.poster_path}`;
-        movieImg.addEventListener('click', () => {
-            location.hash = `#movie=${movie.id}`;
-        });
+        movieImg.dataset.movieId = movie.id; // Add the movie ID to the data attribute
         movieCard.appendChild(movieImg);
 
         const movieTitle = ce("h3");
@@ -127,8 +141,8 @@ async function getGenresPreview() {
     genres.forEach((genre) => {
         const trendingPreviewMovieList = document.querySelector("#genresPreview .genres-preview-list");
 
-        const genreContainer = ce("div");
-        genreContainer.classList.add("genre-container");
+        // const genreContainer = ce("div");
+        // genreContainer.classList.add("genres-container");
 
         const genreTitle = ce("h3");
         genreTitle.classList.add("genre-title");
@@ -136,8 +150,8 @@ async function getGenresPreview() {
         const genreTitleText = document.createTextNode(genre.name);
 
         genreTitle.appendChild(genreTitleText);
-        genreContainer.appendChild(genreTitle);
-        trendingPreviewMovieList.appendChild(genreContainer);
+        genresContainer.appendChild(genreTitle);
+        trendingPreviewMovieList.appendChild(genresContainer);
     });
 }
 
@@ -160,6 +174,14 @@ async function getGenresInMenu() {
     });
 }
 
+async function getTrendingMovies(){
+    const { data } = await api("/trending/movie/day");
+    const movies = data.results;
+    // console.log({data, movies});
+
+    createGenericMovies(movies, genericMovieList);
+}
+
 async function getMoviesByGenre(genreId) {
     const { data } = await api('/discover/movie', {
         params: {
@@ -170,40 +192,40 @@ async function getMoviesByGenre(genreId) {
     const movies = data.results;
     // console.log({data, movies});
 
-    // createGenericMovies(movies, genericMovieList);
-    movies.forEach((movie) => {
-        const movieCard = ce("div");
-        movieCard.classList.add("movie-card");
+    createGenericMovies(movies, genericMovieList);
+    // movies.forEach((movie) => {
+    //     const movieCard = ce("div");
+    //     movieCard.classList.add("movie-card");
 
-        const movieImg = ce("img");
-        movieImg.classList.add("movie-img");
-        movieImg.alt = movie.title;
-        movieImg.src = `https://image.tmdb.org/t/p/w300${movie.poster_path}`;
-        movieImg.addEventListener('click', () => {
-            location.hash = `#movie=${movie.id}`;
-        });
-        movieCard.appendChild(movieImg);
+    //     const movieImg = ce("img");
+    //     movieImg.classList.add("movie-img");
+    //     movieImg.alt = movie.title;
+    //     movieImg.src = `https://image.tmdb.org/t/p/w300${movie.poster_path}`;
+    //     movieImg.addEventListener('click', () => {
+    //         location.hash = `#movie=${movie.id}`;
+    //     });
+    //     movieCard.appendChild(movieImg);
 
-        const movieTitle = ce("h3");
-        movieTitle.classList.add("movie-title");
-        movieTitle.textContent = movie.title;
-        movieCard.appendChild(movieTitle);
+    //     const movieTitle = ce("h3");
+    //     movieTitle.classList.add("movie-title");
+    //     movieTitle.textContent = movie.title;
+    //     movieCard.appendChild(movieTitle);
         
-        const genreSection = document.querySelector("#genre .genre-movies-list");
-        genreSection.appendChild(movieCard);
-    });
+    //     const genreSection = document.querySelector("#genre .genre-movies-list");
+    //     genreSection.appendChild(movieCard);
+    // });
 }
 
 async function getMoviesBySearch(searchQuery) {
-    searchQuery = decodeURI(searchQuery);
+    // searchQuery = decodeURI(searchQuery);
     const { data } = await api('/search/movie', {
         params: {
             query: searchQuery,
         }
     });
-    
     const movies = data.results;
 
+    genericMovieTitle.textContent = `Search results for "${searchQuery}"`;
     createGenericMovies(movies, genericMovieList);
 
     // movies.forEach((movie) => {
@@ -225,34 +247,74 @@ async function getMoviesBySearch(searchQuery) {
     // });
 }
 
-async function getMovieDetails(movieId) {
-    const { data } = await api(`/movie/${movieId}`);
-    const movie = data;
-    console.log({data, movie});
+async function getMovieById(movieId) {
+    const { data: movie } = await api(`/movie/${movieId}`);
+    // console.log(movie);
 
     const movieDetailImg = ce("img");
     movieDetailImg.classList.add("movie-detail-img");
     movieDetailImg.alt = movie.title;
-    movieDetailImg.src = `https://image.tmdb.org/t/p/w300${movie.poster_path}`;
+    movieDetailImg.src = `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
     movieDetailImgContainer.appendChild(movieDetailImg);
 
     const movieDetailTitle = ce("h2");
     movieDetailTitle.classList.add("movie-detail-title");
     movieDetailTitle.textContent = movie.title;
     movieDetailInfoContainer.appendChild(movieDetailTitle);
+
+    // Container for the release date y runtime
+    const movieDetailReleaseRuntimeContainer = ce("div");
+    movieDetailReleaseRuntimeContainer.classList.add("movie-detail-release-runtime-container");
+
+    const movieDetailRelease = ce("p");
+    movieDetailRelease.classList.add("movie-detail-release-date");
+    movieDetailRelease.textContent = `📅 ${movie.release_date}`;
+    movieDetailInfoContainer.appendChild(movieDetailRelease);
+
+    const movieDetailSpan = ce("span");
+    movieDetailSpan.classList.add("movie-detail-span");
+    movieDetailSpan.textContent = " | ";
+    movieDetailInfoContainer.appendChild(movieDetailSpan);
+
+    const movieDetailRuntime = ce("p");
+    movieDetailRuntime.classList.add("movie-detail-runtime");
+    movieDetailRuntime.textContent = `⏱️ ${movie.runtime} min`;
+    movieDetailInfoContainer.appendChild(movieDetailRuntime);
     
+    movieDetailReleaseRuntimeContainer.appendChild(movieDetailRelease);
+    movieDetailReleaseRuntimeContainer.appendChild(movieDetailSpan);
+    movieDetailReleaseRuntimeContainer.appendChild(movieDetailRuntime);
+    movieDetailInfoContainer.appendChild(movieDetailReleaseRuntimeContainer);
+
     const movieDetailRating = ce("p");
     movieDetailRating.classList.add("movie-detail-rating");
     movieDetailRating.textContent = `⭐ ${movie.vote_average}`;
     movieDetailInfoContainer.appendChild(movieDetailRating);
-    
-    const movieDetailReleaseDate = ce("p");
-    movieDetailReleaseDate.classList.add("movie-detail-release-date");
-    movieDetailReleaseDate.textContent = `📅 ${movie.release_date}`;
-    movieDetailInfoContainer.appendChild(movieDetailReleaseDate);
 
     const movieDetailOverview = ce("p");
     movieDetailOverview.classList.add("movie-detail-overview");
     movieDetailOverview.textContent = movie.overview;
     movieDetailInfoContainer.appendChild(movieDetailOverview);
+
+    getRelatedMovies(movieId);
+}
+
+async function getRelatedMovies(movieId) {
+    const { data } = await api(`/movie/${movieId}/similar`);
+    const relatedMovies = data.results;
+
+    // Check if the related movies list is empty
+    const childrenRelatedMovies = Array.from(relatedMoviesList.children);
+    if (!childrenRelatedMovies.length) {
+        createGenericMovies(relatedMovies, relatedMoviesList);
+        
+    } else {
+        // Remove the related movies from the previous movie
+        childrenRelatedMovies.forEach((child) => {
+            child.remove();
+        });
+        // Get the related movies from the new movie
+        createGenericMovies(relatedMovies, relatedMoviesList);
+    }
+    
 }
