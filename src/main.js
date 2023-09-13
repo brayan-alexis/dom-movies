@@ -38,66 +38,7 @@ svgElement.addEventListener('click', () => {
 });
 
 // Utils
-// async function getElementsAndFillList(path, parentElement, optionalConfig = {}) {
-//     const { data } = await api(path, optionalConfig);
-//     const elements = data.results;
-//     // console.log({data, elements});
-
-//     elements.forEach((element) => {
-//         const elementContainer = ce("div");
-//         elementContainer.classList.add("element-container");
-
-//         const elementImg = ce("img");
-//         elementImg.classList.add("element-img");
-//         elementImg.alt = element.title;
-//         elementImg.src = `https://image.tmdb.org/t/p/w300${element.poster_path}`;
-//         elementContainer.appendChild(elementImg);
-
-//         const elementTitle = ce("h3");
-//         elementTitle.classList.add("element-title");
-//         elementTitle.textContent = element.title;
-//         elementContainer.appendChild(elementTitle);
-
-//         const elementReleaseDate = ce("p");
-//         elementReleaseDate.classList.add("element-release-date");
-//         elementReleaseDate.textContent = `📅 ${element.release_date}`;
-//         elementContainer.appendChild(elementReleaseDate);
-        
-//         parentElement.appendChild(elementContainer);
-//     });
-// }
-
-async function createGenericMovies(movies, parentElement) {
-    movies.forEach((movie) => {
-        const movieCard = ce("div");
-        movieCard.classList.add("movie-card");
-
-        const movieImg = ce("img");
-        movieImg.classList.add("movie-img");
-        movieImg.alt = movie.title;
-        movieImg.src = `https://image.tmdb.org/t/p/w300${movie.poster_path}`;
-        movieImg.addEventListener('click', () => {
-            location.hash = `#movie=${movie.id}`;
-        });
-        movieCard.appendChild(movieImg);
-
-        const movieTitle = ce("h3");
-        movieTitle.classList.add("movie-title");
-        movieTitle.textContent = movie.title;
-        movieCard.appendChild(movieTitle);
-        
-        parentElement.appendChild(movieCard);
-    } );
-}
-
-// Call to API
-async function getTrendingMoviesPreview() {
-    const { data } = await api("/trending/movie/day");
-    const movies = data.results;
-    console.log({data, movies});
-
-    const trendingPreviewMovieList = document.querySelector("#trendingPreview .trending-preview-movie-list");
-
+function fillTrendingMoviesPreview(movies) {
     // Add onlick event to the movie cards
     trendingPreviewMovieList.addEventListener('click', (event) => {
         const movieCard = event.target.closest(".movie-img"); // Find the closest ancestor that matches the selector
@@ -131,6 +72,65 @@ async function getTrendingMoviesPreview() {
         
         trendingPreviewMovieList.appendChild(movieCard);
     });
+}
+
+async function updateGenericMoviesList(movies, parentElement) {
+    // Check if the generic movies list is empty
+    const existingMovieCards = Array.from(parentElement.children);
+    if (!existingMovieCards.length) {
+        fillGenericMoviesList(movies, parentElement);
+    } else {
+        // Remove the previous generic movies
+        existingMovieCards.forEach((movieCard) => {
+            movieCard.remove();
+        });
+        // Fill the generic movies list with the new movies
+        fillGenericMoviesList(movies, parentElement);
+    }
+}
+
+function fillGenericMoviesList(movies, parentElement) {
+    movies.forEach((movie) => {
+        const movieCard = ce("div");
+        movieCard.classList.add("movie-card");
+
+        const movieImg = ce("img");
+        movieImg.classList.add("movie-img");
+        movieImg.alt = movie.title;
+        movieImg.src = `https://image.tmdb.org/t/p/w300${movie.poster_path}`;
+        movieImg.addEventListener('click', () => {
+            location.hash = `#movie=${movie.id}`;
+        });
+        movieCard.appendChild(movieImg);
+
+        const movieTitle = ce("h3");
+        movieTitle.classList.add("movie-title");
+        movieTitle.textContent = movie.title;
+        movieCard.appendChild(movieTitle);
+        
+        parentElement.appendChild(movieCard);
+    });
+}
+
+
+// Calls to API
+async function getTrendingMoviesPreview() {
+    const { data } = await api("/trending/movie/day");
+    const movies = data.results;
+    console.log({data, movies});
+
+    // Check if the trending movies list is empty
+    const existingMovieCards = Array.from(trendingPreviewMovieList.children);
+    if (!existingMovieCards.length) {
+        fillTrendingMoviesPreview(movies);
+    } else {
+        // Remove the previous trending movies
+        existingMovieCards.forEach((movieCard) => {
+            movieCard.remove();
+        });
+        // Fill the trending movies list with the new movies
+        fillTrendingMoviesPreview(movies);
+    }
 }
 
 async function getGenresPreview() {
@@ -179,7 +179,7 @@ async function getTrendingMovies(){
     const movies = data.results;
     // console.log({data, movies});
 
-    createGenericMovies(movies, genericMovieList);
+    updateGenericMoviesList(movies, genericMovieList);
 }
 
 async function getMoviesByGenre(genreId) {
@@ -192,7 +192,7 @@ async function getMoviesByGenre(genreId) {
     const movies = data.results;
     // console.log({data, movies});
 
-    createGenericMovies(movies, genericMovieList);
+    updateGenericMoviesList(movies, genericMovieList);
     // movies.forEach((movie) => {
     //     const movieCard = ce("div");
     //     movieCard.classList.add("movie-card");
@@ -226,7 +226,7 @@ async function getMoviesBySearch(searchQuery) {
     const movies = data.results;
 
     genericMovieTitle.textContent = `Search results for "${searchQuery}"`;
-    createGenericMovies(movies, genericMovieList);
+    updateGenericMoviesList(movies, genericMovieList);
 
     // movies.forEach((movie) => {
     //     const movieCard = ce("div");
@@ -306,7 +306,7 @@ async function getRelatedMovies(movieId) {
     // Check if the related movies list is empty
     const childrenRelatedMovies = Array.from(relatedMoviesList.children);
     if (!childrenRelatedMovies.length) {
-        createGenericMovies(relatedMovies, relatedMoviesList);
+        updateGenericMoviesList(relatedMovies, relatedMoviesList);
         
     } else {
         // Remove the related movies from the previous movie
@@ -314,7 +314,7 @@ async function getRelatedMovies(movieId) {
             child.remove();
         });
         // Get the related movies from the new movie
-        createGenericMovies(relatedMovies, relatedMoviesList);
+        updateGenericMoviesList(relatedMovies, relatedMoviesList);
     }
     
 }

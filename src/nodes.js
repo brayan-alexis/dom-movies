@@ -4,6 +4,7 @@ const qs = (selector) => document.querySelector(selector); // qs = querySelector
 // Sections
 const headerSection = $("header");
 const trendingPreviewSection = $("trendingPreview");
+const searchSection = qs(".search-section");
 const genresPreviewSection = $("genresPreview");
 const movieDetailSection = qs(".movie-detail-container");
 

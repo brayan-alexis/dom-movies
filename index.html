@@ -45,7 +45,7 @@
         <p>⭐</p>
     </header>
 
-    <section class="search-section">
+    <section class="search-section inactive">
         <form class="search-form">
             <input id="seachFormInput" type="text" class="search-form-input" placeholder="Search">
             <button id="searchBtn" class="search-form-button">
@@ -54,36 +54,47 @@
                 </svg>
             </button>
         </form>
-
-        <div class="search-results-container inactive">
-            <div class="search-results-list">
-                <!-- <div class="search-result-container">
-                    <img src="https://image.tmdb.org/t/p/w300/adOzdWS35KAo21r9R4BuFCkLer6.jpg" class="search-result-img" alt="Movie name">
-                    <p class="search-result-title">The Old Guard</p>
-                </div> -->
-            </div>
-        </div>
     </section>
 
-    <section id="trendingPreview" class="trending-preview-container"> 
+    <section id="trendingPreview" class="trending-preview-container inactive"> 
         <div class="trending-preview-header">
             <h2 class="trending-preview-title">Trending Now</h2>
             <a href="#" class="trending-preview-view-all">View All</a>
         </div>
 
         <article class="trending-preview-movie-list">
+            <div class="movie-card movie-card--loading">
+                <div class="movie-img movie-img--loading"></div>
+                <h3 class="movie-title movie-title--loading"></h3>
+                <h3 class="movie-title movie-title--loading"></h3>
+            </div>
+            <div class="movie-card movie-card--loading">
+                <div class="movie-img movie-img--loading"></div>
+                <h3 class="movie-title movie-title--loading"></h3>
+                <h3 class="movie-title movie-title--loading"></h3>
+            </div>
+            <div class="movie-card movie-card--loading">
+                <div class="movie-img movie-img--loading"></div>
+                <h3 class="movie-title movie-title--loading"></h3>
+                <h3 class="movie-title movie-title--loading"></h3>
+            </div>
+            
+            <!-- <div class="movie-card movie-container--loading"></div>
+            <div class="movie-card movie-container--loading"></div>
+            <div class="movie-card movie-container--loading"> -->
             <!-- <div class="movie-container">
                 <img src="https://image.tmdb.org/t/p/w300/adOzdWS35KAo21r9R4BuFCkLer6.jpg" class="movie-img" alt="Movie name">
                 <p class="movie-title">The Old Guard</p>
                 <p class="movie-rating">⭐️ 9.2</p>
             </div> -->
+            <!-- </div> -->
         </article>
     </section>
 
     <!-- Start: Popular -->
-    <!-- End: Generic list -->
+    <!-- End: Popular -->
 
-    <section id="genresPreview" class="genres-preview-container">
+    <section id="genresPreview" class="genres-preview-container inactive">
         <h2 class="genres-preview-title">Genres</h2>
 
         <article class="genres-preview-list">
@@ -98,10 +109,18 @@
         <h2 class="generic-movie-title">Movies</h2>
 
         <div class="generic-movie-list">
+            <div class="movie-card movie-card--loading">
+                <div class="movie-img movie-img--loading"></div>
+                <h3 class="movie-title movie-title--loading"></h3>
+            </div>
+            <div class="movie-card movie-card--loading">
+                <div class="movie-img movie-img--loading"></div>
+                <h3 class="movie-title movie-title--loading"></h3>
             <!-- <div class="generic-list-item-container">
                 <img src="https://image.tmdb.org/t/p/w300/adOzdWS35KAo21r9R4BuFCkLer6.jpg" class="generic-list-item-img" alt="Movie name">
                 <p class="generic-list-item-title">The Old Guard</p>
-            </div> -->      
+            </div> -->   
+            </div>   
         </div>
     </section>
     <!-- End: Generic list -->
