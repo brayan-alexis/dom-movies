@@ -69,13 +69,6 @@ function homePage() {
     // Generic
     genericList.classList.add('inactive');
 
-    // Check if the trending movies preview is empty and if so, get the data from the API
-    // const childrenCategoriesPreview = Array.from(trendingPreviewMovieList.children);
-    // if (!childrenCategoriesPreview.length){
-    //     getTrendingMoviesPreview();
-    //     getGenresPreview();
-    // }
-
     getTrendingMoviesPreview();
     getGenresPreview();
 }
@@ -142,8 +135,6 @@ function searchPage() {
 
     // Get the search query from the hash
     const searchQuery = decodeURI(location.hash.split('=')[1]);
-    // const searchQuery = searchFormInput.value;
-    // searchFormInput.value = searchQuery;
     getMoviesBySearch(searchQuery);
 }
 
@@ -213,8 +204,6 @@ function genrePage() {
     genericList.classList.remove('inactive');
 
     const [genreId, genreTitle] = location.hash.split('=')[1].split('_'); // Get the genre id and title from the hash
-
-    genericMovieTitle.textContent = genreTitle; // Set the genre title in the header
-
-    getMoviesByGenre(genreId);
+    
+    getMoviesByGenre(genreId, genreTitle);
 }

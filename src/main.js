@@ -38,6 +38,36 @@ svgElement.addEventListener('click', () => {
 });
 
 // Utils
+async function updateTrendingMoviesPreview(movies) {
+    // Check if the trending movies list is empty
+    const existingMovieCards = Array.from(trendingPreviewMovieList.children);
+    if (!existingMovieCards.length) {
+        fillTrendingMoviesPreview(movies);
+    } else {
+        // Remove the previous trending movies
+        existingMovieCards.forEach((movieCard) => {
+            movieCard.remove();
+        });
+        // Fill the trending movies list with the new movies
+        fillTrendingMoviesPreview(movies);
+    }
+}
+
+async function updateGenericMoviesList(movies, parentElement) {
+    // Check if the generic movies list is empty
+    const existingMovieCards = Array.from(parentElement.children);
+    if (!existingMovieCards.length) {
+        fillGenericMoviesList(movies, parentElement);
+    } else {
+        // Remove the previous generic movies
+        existingMovieCards.forEach((movieCard) => {
+            movieCard.remove();
+        });
+        // Fill the generic movies list with the new movies
+        fillGenericMoviesList(movies, parentElement);
+    }
+}
+
 function fillTrendingMoviesPreview(movies) {
     // Add onlick event to the movie cards
     trendingPreviewMovieList.addEventListener('click', (event) => {
@@ -56,7 +86,8 @@ function fillTrendingMoviesPreview(movies) {
         const movieImg = ce("img");
         movieImg.classList.add("movie-img");
         movieImg.alt = movie.title;
-        movieImg.src = `https://image.tmdb.org/t/p/w300${movie.poster_path}`;
+        movieImg.setAttribute("data-src", `https://image.tmdb.org/t/p/w300${movie.poster_path}`); //Add data-src attribute to the image
+        // movieImg.src = `https://image.tmdb.org/t/p/w300${movie.poster_path}`;
         movieImg.dataset.movieId = movie.id; // Add the movie ID to the data attribute
         movieCard.appendChild(movieImg);
 
@@ -71,22 +102,9 @@ function fillTrendingMoviesPreview(movies) {
         movieCard.appendChild(movieReleaseDate);
         
         trendingPreviewMovieList.appendChild(movieCard);
-    });
-}
 
-async function updateGenericMoviesList(movies, parentElement) {
-    // Check if the generic movies list is empty
-    const existingMovieCards = Array.from(parentElement.children);
-    if (!existingMovieCards.length) {
-        fillGenericMoviesList(movies, parentElement);
-    } else {
-        // Remove the previous generic movies
-        existingMovieCards.forEach((movieCard) => {
-            movieCard.remove();
-        });
-        // Fill the generic movies list with the new movies
-        fillGenericMoviesList(movies, parentElement);
-    }
+        lazyLoading.observe(movieImg); // Lazy loading
+    });
 }
 
 function fillGenericMoviesList(movies, parentElement) {
@@ -97,7 +115,7 @@ function fillGenericMoviesList(movies, parentElement) {
         const movieImg = ce("img");
         movieImg.classList.add("movie-img");
         movieImg.alt = movie.title;
-        movieImg.src = `https://image.tmdb.org/t/p/w300${movie.poster_path}`;
+        movieImg.setAttribute("data-src", `https://image.tmdb.org/t/p/w300${movie.poster_path}`); //Add data-src attribute to the image
         movieImg.addEventListener('click', () => {
             location.hash = `#movie=${movie.id}`;
         });
@@ -109,8 +127,23 @@ function fillGenericMoviesList(movies, parentElement) {
         movieCard.appendChild(movieTitle);
         
         parentElement.appendChild(movieCard);
+
+        lazyLoading.observe(movieImg); // Lazy loading
     });
 }
+
+// Lazy loading
+const lazyLoading = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+            const img = entry.target;
+            img.src = img.dataset.src;
+            // img.removeAttribute("data-src");
+            img.classList.add("fade-in"); // Agrega una clase para animar la opacidad
+            lazyLoading.unobserve(img);
+        }
+    });
+});
 
 
 // Calls to API
@@ -119,18 +152,7 @@ async function getTrendingMoviesPreview() {
     const movies = data.results;
     console.log({data, movies});
 
-    // Check if the trending movies list is empty
-    const existingMovieCards = Array.from(trendingPreviewMovieList.children);
-    if (!existingMovieCards.length) {
-        fillTrendingMoviesPreview(movies);
-    } else {
-        // Remove the previous trending movies
-        existingMovieCards.forEach((movieCard) => {
-            movieCard.remove();
-        });
-        // Fill the trending movies list with the new movies
-        fillTrendingMoviesPreview(movies);
-    }
+    updateTrendingMoviesPreview(movies);
 }
 
 async function getGenresPreview() {
@@ -182,7 +204,7 @@ async function getTrendingMovies(){
     updateGenericMoviesList(movies, genericMovieList);
 }
 
-async function getMoviesByGenre(genreId) {
+async function getMoviesByGenre(genreId, genreTitle) {
     const { data } = await api('/discover/movie', {
         params: {
             with_genres: genreId,
@@ -192,28 +214,8 @@ async function getMoviesByGenre(genreId) {
     const movies = data.results;
     // console.log({data, movies});
 
+    genericMovieTitle.textContent = decodeURI(genreTitle); // Set the genre title in the page
     updateGenericMoviesList(movies, genericMovieList);
-    // movies.forEach((movie) => {
-    //     const movieCard = ce("div");
-    //     movieCard.classList.add("movie-card");
-
-    //     const movieImg = ce("img");
-    //     movieImg.classList.add("movie-img");
-    //     movieImg.alt = movie.title;
-    //     movieImg.src = `https://image.tmdb.org/t/p/w300${movie.poster_path}`;
-    //     movieImg.addEventListener('click', () => {
-    //         location.hash = `#movie=${movie.id}`;
-    //     });
-    //     movieCard.appendChild(movieImg);
-
-    //     const movieTitle = ce("h3");
-    //     movieTitle.classList.add("movie-title");
-    //     movieTitle.textContent = movie.title;
-    //     movieCard.appendChild(movieTitle);
-        
-    //     const genreSection = document.querySelector("#genre .genre-movies-list");
-    //     genreSection.appendChild(movieCard);
-    // });
 }
 
 async function getMoviesBySearch(searchQuery) {

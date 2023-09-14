@@ -383,7 +383,7 @@ body {
     margin: auto;
     text-decoration: none;
     color: var(--white);
-    opacity: .9;
+    /* opacity: .9; */
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -399,6 +399,9 @@ body {
     border-radius: 1rem;
     /* max-width: 100%;
     height: auto; */
+
+    opacity: 0; /* Inicialmente, establece la opacidad en 0 para ocultar la imagen */
+    transition: opacity 0.5s; /* Agrega una transición suave de 0.5 segundos para la opacidad */
 }
 .movie-title {
     /* font-family: var(--font-family-titles);
@@ -440,6 +443,10 @@ body {
     width: 100%;
     height: 1rem;
     margin: 0.5rem 0;
+}
+.fade-in {
+    /* transition: opacity 0.5s; */ /* time to fade in/out */
+    opacity: 1;
 }
 
 /* Show/Hide */
