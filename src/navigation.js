@@ -4,8 +4,23 @@ import {
     getTrendingMovies, 
     getMoviesByGenre, 
     getMoviesBySearch,
-    getMovieDetails
+    getMovieById,
+    getPaginatedTrendingMovies,
+    getPaginatedBySearch,
+    getPaginatedMoviesByGenre,
 } from './main.js';
+import {
+    setTrendingPageCounter,
+    getTrendingPageCounter,
+    setGenrePageCounter,
+    getGenrePageCounter,
+    setSearchPageCounter,
+    getSearchPageCounter,
+    
+} from './pageManager.js';
+
+// let page = 1;
+let infiniteScroll;
 
 headerTitle.addEventListener('click', () => {
     location.hash = '';
@@ -34,16 +49,34 @@ searchFormBtn.addEventListener('click', (event) => {
 
 window.addEventListener('load', navigator, false);
 window.addEventListener('hashchange', navigator, false);
+// window.addEventListener('scroll',()=>infiniteScroll(), false);
+window.addEventListener('scroll', infiniteScroll, { passive: false });
 
 function navigator() {
-    console.log({location});
+    // console.log({location});
+
+    if (infiniteScroll) {
+        window.removeEventListener('scroll', infiniteScroll, { passive: false });
+        infiniteScroll = undefined;
+    }
 
     location.hash.startsWith('#trends')    ? trendsPage()       :
     location.hash.startsWith('#search=')   ? searchPage()       :
     location.hash.startsWith('#movie=')    ? movieDetailsPage() :
     location.hash.startsWith('#genre=')    ? genrePage()        :
     location.hash.startsWith('#popular')   ? popularPage()      :
-    homePage()
+    homePage();
+
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+    
+    if (infiniteScroll) {
+        window.addEventListener('scroll', infiniteScroll, { passive: false });
+    }
+
+    setTrendingPageCounter(1);
+    setGenrePageCounter(1);
+    setSearchPageCounter(1);
 }
 
 function homePage() {
@@ -96,18 +129,16 @@ function trendsPage() {
     // Generic
     genericList.classList.remove('inactive');
 
-    // Check if the trending movies preview is empty and if so, get the data from the API
-    const childrenCategoriesPreview = Array.from(genericMovieList.children);
-    if (!childrenCategoriesPreview.length){
-        getTrendingMovies();
-    } else {
-        // Remove the movies from the previous category
-        childrenCategoriesPreview.forEach((child) => {
-            child.remove();
-        });
-        // Get the movies from the new category
-        getTrendingMovies();
-    }
+    getTrendingMovies();
+    
+    infiniteScroll = getPaginatedTrendingMovies;
+
+    // infiniteScroll = () => {
+    //     if (window.scrollY + window.innerHeight >= (document.body.offsetHeight)) {
+    //         page++;
+    //         getTrendingMovies(page);
+    //     }
+    // }
 }
 
 function searchPage() {
@@ -136,6 +167,9 @@ function searchPage() {
     // Get the search query from the hash
     const searchQuery = decodeURI(location.hash.split('=')[1]);
     getMoviesBySearch(searchQuery);
+
+    infiniteScroll = getPaginatedBySearch(searchQuery);
+    // infiniteScroll = () => getPaginatedBySearch(searchQuery);
 }
 
 function movieDetailsPage() {
@@ -165,7 +199,7 @@ function movieDetailsPage() {
     const childrenMovieDetails = Array.from(movieDetailInfoContainer.children);
     const childrenMovieImg = Array.from(movieDetailImgContainer.children);
     if (!childrenMovieDetails.length && !childrenMovieImg.length){
-        getMovieDetails(movieId);
+        getMovieById(movieId);
     } else {
         // Remove the movie details from the previous movie
         childrenMovieDetails.forEach((child) => {
@@ -175,7 +209,7 @@ function movieDetailsPage() {
             child.remove();
         });
         // Get the movie details from the new movie
-        getMovieDetails(movieId);
+        getMovieById(movieId);
     }
 }
 
@@ -206,4 +240,6 @@ function genrePage() {
     const [genreId, genreTitle] = location.hash.split('=')[1].split('_'); // Get the genre id and title from the hash
     
     getMoviesByGenre(genreId, genreTitle);
+    
+    infiniteScroll = getPaginatedMoviesByGenre(genreId);
 }

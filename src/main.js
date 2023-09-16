@@ -1,15 +1,29 @@
 import { API_KEY } from "./secrets.js";
+import { 
+    getTrendingPageCounter, 
+    setTrendingPageCounter, 
+    getGenrePageCounter, 
+    setGenrePageCounter, 
+    getSearchPageCounter, 
+    setSearchPageCounter
+} from './pageManager.js';
 export { 
     getTrendingMoviesPreview, 
     getGenresPreview,
     getTrendingMovies, 
     getMoviesByGenre, 
     getMoviesBySearch, 
-    getMovieById as getMovieDetails 
+    getMovieById,
+    getPaginatedTrendingMovies,
+    getPaginatedBySearch,
+    getPaginatedMoviesByGenre,
 };
 
 window.addEventListener('load', getGenresInMenu, false); // Load the genres in the menu
 
+let maxPage;
+// let categoryPageCounter = 1;
+// let page = 1;
 const ce = (element) => document.createElement(element); // ce = Create element
 
 const api = axios.create({
@@ -53,17 +67,29 @@ async function updateTrendingMoviesPreview(movies) {
     }
 }
 
-async function updateGenericMoviesList(movies, parentElement) {
-    // Check if the generic movies list is empty
-    const existingMovieCards = Array.from(parentElement.children);
-    if (!existingMovieCards.length) {
-        fillGenericMoviesList(movies, parentElement);
+async function updateGenericMoviesList(movies, parentElement, clean = true) {
+    // If clean is true, remove the previous movies and fill the list with the new movies. 
+    // If clean is false, just fill the list with the new movies
+    // console.log(`trendingPageCounter: ${getTrendingPageCounter()}`);
+    // console.log(`genrePageCounter: ${getGenrePageCounter()}`);
+    // console.log(`searchPageCounter: ${getSearchPageCounter()}`);
+    console.log('Is needed to clean the list?');
+    console.log(clean);
+
+    if (clean == 1) {
+        // Check if the generic movies list is empty
+        const existingMovieCards = Array.from(parentElement.children);
+        if (!existingMovieCards.length) {
+            fillGenericMoviesList(movies, parentElement);
+        } else {
+            // Remove the previous movies
+            existingMovieCards.forEach((movieCard) => {
+                movieCard.remove();
+            });
+            // Fill the generic movies list with the new movies
+            fillGenericMoviesList(movies, parentElement);
+        }
     } else {
-        // Remove the previous generic movies
-        existingMovieCards.forEach((movieCard) => {
-            movieCard.remove();
-        });
-        // Fill the generic movies list with the new movies
         fillGenericMoviesList(movies, parentElement);
     }
 }
@@ -88,6 +114,10 @@ function fillTrendingMoviesPreview(movies) {
         movieImg.alt = movie.title;
         movieImg.setAttribute("data-src", `https://image.tmdb.org/t/p/w300${movie.poster_path}`); //Add data-src attribute to the image
         // movieImg.src = `https://image.tmdb.org/t/p/w300${movie.poster_path}`;
+        movieImg.addEventListener('error', () => {
+            handleImageError(movieImg);
+        });
+        lazyLoading.observe(movieImg); // Lazy loading
         movieImg.dataset.movieId = movie.id; // Add the movie ID to the data attribute
         movieCard.appendChild(movieImg);
 
@@ -102,8 +132,6 @@ function fillTrendingMoviesPreview(movies) {
         movieCard.appendChild(movieReleaseDate);
         
         trendingPreviewMovieList.appendChild(movieCard);
-
-        lazyLoading.observe(movieImg); // Lazy loading
     });
 }
 
@@ -119,6 +147,10 @@ function fillGenericMoviesList(movies, parentElement) {
         movieImg.addEventListener('click', () => {
             location.hash = `#movie=${movie.id}`;
         });
+        movieImg.addEventListener('error', () => {
+            handleImageError(movieImg);
+        });
+        lazyLoading.observe(movieImg); // Lazy loading
         movieCard.appendChild(movieImg);
 
         const movieTitle = ce("h3");
@@ -127,9 +159,15 @@ function fillGenericMoviesList(movies, parentElement) {
         movieCard.appendChild(movieTitle);
         
         parentElement.appendChild(movieCard);
-
-        lazyLoading.observe(movieImg); // Lazy loading
     });
+
+    // infiniteScroll.observe(parentElement.lastElementChild);
+}
+
+function handleImageError(movieImg) {
+    movieImg.style.objectFit = "cover";
+    movieImg.src = "https://img.freepik.com/vector-gratis/diseno-plano-letrero-foto_23-2149299706.jpg?w=740&t=st=1694715182~exp=1694715782~hmac=ca352c1c1a2eef23acda749aa1dbe8e9bec117a7f0a56c5061ff545bbf2cdd14";
+    // movieImg.style.display= "none";
 }
 
 // Lazy loading
@@ -147,6 +185,25 @@ const lazyLoading = new IntersectionObserver((entries) => {
 
 
 // Calls to API
+async function getGenresInMenu() {
+    const { data } = await api("/genre/movie/list");
+    const genres = data.genres;
+    
+    genres.forEach((genre) => {
+        const genreList = document.querySelector(".header-menu-genres-list");
+        
+        const genreListItem = ce("li");
+        genreListItem.classList.add("header-menu-list-item");
+        genreListItem.textContent = genre.name; 
+        genreListItem.setAttribute("id", genre.id);
+        genreListItem.addEventListener('click', () => {
+            location.hash = `#genre=${genre.id}_${genre.name}`;
+        });
+        genreList.appendChild(genreListItem);
+
+    });
+}
+
 async function getTrendingMoviesPreview() {
     const { data } = await api("/trending/movie/day");
     const movies = data.results;
@@ -177,31 +234,42 @@ async function getGenresPreview() {
     });
 }
 
-async function getGenresInMenu() {
-    const { data } = await api("/genre/movie/list");
-    const genres = data.genres;
-    
-    genres.forEach((genre) => {
-        const genreList = document.querySelector(".header-menu-genres-list");
-        
-        const genreListItem = ce("li");
-        genreListItem.classList.add("header-menu-list-item");
-        genreListItem.textContent = genre.name; 
-        genreListItem.setAttribute("id", genre.id);
-        genreListItem.addEventListener('click', () => {
-            location.hash = `#genre=${genre.id}_${genre.name}`;
-        });
-        genreList.appendChild(genreListItem);
-
+async function getTrendingMovies(page = 1) {
+    const { data } = await api("/trending/movie/day", {
+        params: {
+            page,
+        }
     });
+    const movies = data.results;
+    maxPage = data.total_pages;
+    
+    // updateGenericMoviesList(movies, genericMovieList, {clean: page == 1});
+    // updateGenericMoviesList(movies, genericMovieList, (page == 1));
+    updateGenericMoviesList(movies, genericMovieList);
+
+    genericMovieTitle.textContent = "Trending Now";
 }
 
-async function getTrendingMovies(){
-    const { data } = await api("/trending/movie/day");
-    const movies = data.results;
-    // console.log({data, movies});
+async function getPaginatedTrendingMovies() {
+    const { scrollTop, scrollHeight, clientHeight, } = document.documentElement;
+    const scrollIsBottom = (scrollTop + clientHeight) >= (scrollHeight - 15);
 
-    updateGenericMoviesList(movies, genericMovieList);
+    const pageIsNotMax = getTrendingPageCounter() < maxPage;
+
+    if (scrollIsBottom && pageIsNotMax) {
+        // page++;
+        setTrendingPageCounter(getTrendingPageCounter() + 1);
+        // getTrendingMovies(page++);
+        const { data } = await api("/trending/movie/day", {
+            params: {
+                page: getTrendingPageCounter(),
+            },
+        });
+        const movies = data.results;
+
+        updateGenericMoviesList(movies, genericMovieList, {clean: getTrendingPageCounter() == 1});
+    }
+    // console.log(`trendingPageCounter: ${getTrendingPageCounter()}`);
 }
 
 async function getMoviesByGenre(genreId, genreTitle) {
@@ -210,12 +278,36 @@ async function getMoviesByGenre(genreId, genreTitle) {
             with_genres: genreId,
         }
     });
-    
     const movies = data.results;
     // console.log({data, movies});
+    maxPage = data.total_pages;
+    console.log(`maxPage:   ${maxPage}`);
 
     genericMovieTitle.textContent = decodeURI(genreTitle); // Set the genre title in the page
     updateGenericMoviesList(movies, genericMovieList);
+}
+
+function getPaginatedMoviesByGenre(genreId) {
+    return async () => {
+        const { scrollTop, scrollHeight, clientHeight, } = document.documentElement;
+        const scrollIsBottom = (scrollTop + clientHeight) >= (scrollHeight - 15);
+    
+        
+        const pageIsNotMax = getGenrePageCounter() < maxPage;
+    
+        if (scrollIsBottom && pageIsNotMax) {
+            setGenrePageCounter(getGenrePageCounter() + 1);
+            const { data } = await api("/discover/movie", {
+                params: {
+                    with_genres: genreId,
+                    page: getGenrePageCounter(),
+                },
+            });
+            const movies = data.results;
+    
+            updateGenericMoviesList(movies, genericMovieList, {clean: getGenrePageCounter() == 1});
+        }
+    }
 }
 
 async function getMoviesBySearch(searchQuery) {
@@ -226,27 +318,33 @@ async function getMoviesBySearch(searchQuery) {
         }
     });
     const movies = data.results;
+    maxPage = data.total_pages;
+    console.log(`maxPage:   ${maxPage}`);
 
     genericMovieTitle.textContent = `Search results for "${searchQuery}"`;
     updateGenericMoviesList(movies, genericMovieList);
+}
 
-    // movies.forEach((movie) => {
-    //     const movieCard = ce("div");
-    //     movieCard.classList.add("movie-card");
-
-    //     const movieImg = ce("img");
-    //     movieImg.classList.add("movie-img");
-    //     movieImg.alt = movie.title;
-    //     movieImg.src = `https://image.tmdb.org/t/p/w300${movie.poster_path}`;
-    //     movieCard.appendChild(movieImg);
-
-    //     const movieTitle = ce("h3");
-    //     movieTitle.classList.add("movie-title");
-    //     movieTitle.textContent = movie.title;
-    //     movieCard.appendChild(movieTitle);
-
-    //     searchResultsList.appendChild(movieCard);
-    // });
+function getPaginatedBySearch(searchQuery) {
+    return async () => {
+        const { scrollTop, scrollHeight, clientHeight, } = document.documentElement;
+        const scrollIsBottom = (scrollTop + clientHeight) >= (scrollHeight - 15);
+    
+        const pageIsNotMax = getSearchPageCounter() < maxPage;
+    
+        if (scrollIsBottom && pageIsNotMax) {
+            setSearchPageCounter(getSearchPageCounter() + 1);
+            const { data } = await api("/search/movie", {
+                params: {
+                    query: searchQuery,
+                    page: getSearchPageCounter(),
+                },
+            });
+            const movies = data.results;
+    
+            updateGenericMoviesList(movies, genericMovieList, {clean: getSearchPageCounter() == 1});
+        }
+    }
 }
 
 async function getMovieById(movieId) {
@@ -257,6 +355,9 @@ async function getMovieById(movieId) {
     movieDetailImg.classList.add("movie-detail-img");
     movieDetailImg.alt = movie.title;
     movieDetailImg.src = `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
+    movieDetailImg.addEventListener('error', () => {
+        handleImageError(movieDetailImg);
+    });
     movieDetailImgContainer.appendChild(movieDetailImg);
 
     const movieDetailTitle = ce("h2");
