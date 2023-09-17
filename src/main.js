@@ -117,6 +117,14 @@ function fillTrendingMoviesPreview(movies) {
         movieImg.addEventListener('error', () => {
             handleImageError(movieImg);
         });
+
+        const movieFavBtn = ce("button");
+        movieFavBtn.classList.add("movie-fav-btn");
+        movieFavBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            movieFavBtn.classList.toggle("movie-fav-btn--active");
+        });
+
         lazyLoading.observe(movieImg); // Lazy loading
         movieImg.dataset.movieId = movie.id; // Add the movie ID to the data attribute
         movieCard.appendChild(movieImg);
@@ -131,6 +139,7 @@ function fillTrendingMoviesPreview(movies) {
         movieReleaseDate.textContent = `📅 ${movie.release_date}`;
         movieCard.appendChild(movieReleaseDate);
         
+        movieCard.appendChild(movieFavBtn);
         trendingPreviewMovieList.appendChild(movieCard);
     });
 }
@@ -150,6 +159,7 @@ function fillGenericMoviesList(movies, parentElement) {
         movieImg.addEventListener('error', () => {
             handleImageError(movieImg);
         });
+
         lazyLoading.observe(movieImg); // Lazy loading
         movieCard.appendChild(movieImg);
 
