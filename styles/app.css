@@ -215,7 +215,7 @@ body {
     height: 100%;
 }
 .trending-preview-movie-list .movie-card,
-.favorites-list-item-container {
+.favorites-list .movie-card {
     margin: 0 1rem 0 0;
     padding: 0;
     width: 150px;

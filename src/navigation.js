@@ -8,6 +8,7 @@ import {
     getPaginatedTrendingMovies,
     getPaginatedBySearch,
     getPaginatedMoviesByGenre,
+    getFavoriteMovies,
 } from './main.js';
 import {
     setTrendingPageCounter,
@@ -45,6 +46,10 @@ arrowBack.addEventListener('click', () => {
 searchFormBtn.addEventListener('click', (event) => {
     event.preventDefault();
     location.hash = `#search=${searchFormInput.value}`;
+});
+trendingPreviewViewAll.addEventListener('click', (event) => {
+    event.preventDefault();
+    location.hash = '#trends';
 });
 
 window.addEventListener('load', navigator, false);
@@ -85,13 +90,15 @@ function homePage() {
     // Header
     headerSection.classList.remove('inactive');
     arrowBack.classList.add('inactive');
-    // searchForm.classList.remove('inactive');
 
     // Search
     searchSection.classList.remove('inactive');
     
-    // Trending movies
+    // Trending movies preview
     trendingPreviewSection.classList.remove('inactive');
+
+    // Favorites
+    favoritesSection.classList.remove('inactive');
 
     // Movie details
     movieDetailSection.classList.add('inactive');
@@ -104,6 +111,7 @@ function homePage() {
 
     getTrendingMoviesPreview();
     getGenresPreview();
+    getFavoriteMovies();
 }
 
 function trendsPage() {
@@ -112,13 +120,15 @@ function trendsPage() {
     // Header
     headerSection.classList.remove('inactive');
     arrowBack.classList.remove('inactive');
-    // searchForm.classList.add('inactive');
 
     // Search
     searchSection.classList.add('inactive');
     
-    // Trending movies
+    // Trending movies preview
     trendingPreviewSection.classList.add('inactive');
+
+    // Favorites
+    favoritesSection.classList.add('inactive');
 
     // Movie details
     movieDetailSection.classList.add('inactive');
@@ -152,8 +162,11 @@ function searchPage() {
     // Search
     searchSection.classList.remove('inactive');
 
-    // Trending movies
+    // Trending movies preview
     trendingPreviewSection.classList.add('inactive');
+
+    // Favorites
+    favoritesSection.classList.add('inactive');
 
     // Movie details
     movieDetailSection.classList.add('inactive');
@@ -180,8 +193,11 @@ function movieDetailsPage() {
     arrowBack.classList.remove('inactive');
     searchForm.classList.add('inactive');
 
-    // Trending movies
+    // Trending movies preview
     trendingPreviewSection.classList.add('inactive');
+
+    // Favorites
+    favoritesSection.classList.add('inactive');
 
     // Movie details
     movieDetailSection.classList.remove('inactive');
@@ -225,8 +241,11 @@ function genrePage() {
     // Search
     searchSection.classList.add('inactive');
     
-    // Trending movies
+    // Trending movies preview
     trendingPreviewSection.classList.add('inactive');
+
+    // Favorites
+    favoritesSection.classList.add('inactive');
 
     // Movie details
     movieDetailSection.classList.add('inactive');
