@@ -5,8 +5,10 @@ import {
     getGenrePageCounter, 
     setGenrePageCounter, 
     getSearchPageCounter, 
-    setSearchPageCounter
-} from './pageManager.js';
+    setSearchPageCounter,
+    setMaxPage,
+    getMaxPage,
+} from './pageCounters.js';
 export { 
     getTrendingMoviesPreview, 
     getGenresPreview,
@@ -23,7 +25,7 @@ export {
 window.addEventListener('load', getGenresInMenu, false); // Load the genres in the menu
 
 const ce = (element) => document.createElement(element); // ce = Create element
-let maxPage;
+
 
 // Data
 const api = axios.create({
@@ -281,7 +283,7 @@ async function getTrendingMovies(page = 1) {
         }
     });
     const movies = data.results;
-    maxPage = data.total_pages;
+    setMaxPage(data.total_pages);
     
     // updateGenericMoviesList(movies, genericMovieList, {clean: page == 1});
     // updateGenericMoviesList(movies, genericMovieList, (page == 1));
@@ -294,7 +296,7 @@ async function getPaginatedTrendingMovies() {
     const { scrollTop, scrollHeight, clientHeight, } = document.documentElement;
     const scrollIsBottom = (scrollTop + clientHeight) >= (scrollHeight - 15);
 
-    const pageIsNotMax = getTrendingPageCounter() < maxPage;
+    const pageIsNotMax = getTrendingPageCounter() < getMaxPage();
 
     if (scrollIsBottom && pageIsNotMax) {
         // page++;
@@ -320,8 +322,8 @@ async function getMoviesByGenre(genreId, genreTitle) {
     });
     const movies = data.results;
     // console.log({data, movies});
-    maxPage = data.total_pages;
-    console.log(`maxPage:   ${maxPage}`);
+    setMaxPage(data.total_pages);
+    console.log(`maxPage:   ${getMaxPage()}`);
 
     genericMovieTitle.textContent = decodeURI(genreTitle); // Set the genre title in the page
     updateGenericMoviesList(movies, genericMovieList);
@@ -333,7 +335,7 @@ function getPaginatedMoviesByGenre(genreId) {
         const scrollIsBottom = (scrollTop + clientHeight) >= (scrollHeight - 15);
     
         
-        const pageIsNotMax = getGenrePageCounter() < maxPage;
+        const pageIsNotMax = getGenrePageCounter() < getMaxPage();
     
         if (scrollIsBottom && pageIsNotMax) {
             setGenrePageCounter(getGenrePageCounter() + 1);
@@ -358,8 +360,8 @@ async function getMoviesBySearch(searchQuery) {
         }
     });
     const movies = data.results;
-    maxPage = data.total_pages;
-    console.log(`maxPage:   ${maxPage}`);
+    setMaxPage(data.total_pages);
+    console.log(`maxPage:   ${getMaxPage()}`);
 
     genericMovieTitle.textContent = `Search results for "${searchQuery}"`;
     updateGenericMoviesList(movies, genericMovieList);
@@ -370,7 +372,7 @@ function getPaginatedBySearch(searchQuery) {
         const { scrollTop, scrollHeight, clientHeight, } = document.documentElement;
         const scrollIsBottom = (scrollTop + clientHeight) >= (scrollHeight - 15);
     
-        const pageIsNotMax = getSearchPageCounter() < maxPage;
+        const pageIsNotMax = getSearchPageCounter() < getMaxPage();
     
         if (scrollIsBottom && pageIsNotMax) {
             setSearchPageCounter(getSearchPageCounter() + 1);

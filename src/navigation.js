@@ -12,13 +12,10 @@ import {
 } from './main.js';
 import {
     setTrendingPageCounter,
-    getTrendingPageCounter,
     setGenrePageCounter,
-    getGenrePageCounter,
     setSearchPageCounter,
-    getSearchPageCounter,
     
-} from './pageManager.js';
+} from './pageCounters.js';
 
 // let page = 1;
 let infiniteScroll;

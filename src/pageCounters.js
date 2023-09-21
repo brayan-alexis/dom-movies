@@ -4,9 +4,12 @@ export {
     setGenrePageCounter, 
     getGenrePageCounter, 
     setSearchPageCounter, 
-    getSearchPageCounter 
+    getSearchPageCounter,
+    setMaxPage,
+    getMaxPage,
 };
 
+let maxPage;
 let trendingPageCounter = 1; 
 let genrePageCounter = 1; 
 let searchPageCounter = 1;
@@ -33,4 +36,12 @@ function setSearchPageCounter(newPage) {
 
 function getSearchPageCounter() {
     return searchPageCounter;
+}
+
+function setMaxPage(newMaxPage) {
+    maxPage = newMaxPage;
+}
+
+function getMaxPage() {
+    return maxPage;
 }
