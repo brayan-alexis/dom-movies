@@ -16,7 +16,6 @@ const favoritesSection = $("favorites");
 const headerMenuListContainer = qs(".header-menu-list-container");
 const headerMenuList = qs(".header-menu-list");
 const headerMenuListHome = qs(".header-menu-list-home");
-const headerMenuListFavorites = qs(".header-menu-list-favorites");
 const trendingPreviewMovieList = qs(".trending-preview-movie-list");
 const popularList = qs(".popular-list");
 const topRatedList = qs(".top-rated-list");
@@ -30,11 +29,13 @@ const favoritesList = qs(".favorites-list");
 
 // Elements
 const svgElement = qs(".menuSVG");
+const headerMenuListFavorites = qs(".header-menu-list-favorites");
 const headerTitle = qs(".header-title");
 const headerFavorites = qs(".header-favorites");
 const searchFormInput = $("seachFormInput");
 const searchFormBtn = $('searchBtn');
 const trendingPreviewViewAll = qs(".trending-preview-view-all");
+const favoritesViewAll = qs(".favorites-view-all");
 const movieFavoriteBtn = qs(".movie-favorite-button");
 
 //Generic

@@ -26,10 +26,14 @@ let infiniteScroll;
 headerMenuListHome.addEventListener('click', () => {
     location.hash = '';
 });
+headerMenuListFavorites.addEventListener('click', () => {
+    location.hash = '#favorites';
+});
 headerTitle.addEventListener('click', () => {
+    headerMenuListContainer.classList.toggle("inactive");
     location.hash = '';
 });
-headerMenuListFavorites.addEventListener('click', () => {
+headerFavorites.addEventListener('click', () => {
     location.hash = '#favorites';
 });
 arrowBack.addEventListener('click', () => {
@@ -56,6 +60,10 @@ searchFormBtn.addEventListener('click', (event) => {
 trendingPreviewViewAll.addEventListener('click', (event) => {
     event.preventDefault();
     location.hash = '#trends';
+});
+favoritesViewAll.addEventListener('click', (event) => {
+    event.preventDefault();
+    location.hash = '#favorites';
 });
 
 window.addEventListener('load', navigator, false);
@@ -134,7 +142,7 @@ function homePage() {
     getPopularMovies();
     getTopRatedMovies();
     getUpcomingMovies();
-    getFavoriteMovies();
+    // getFavoriteMovies();
 }
 
 function trendsPage() {
