@@ -17,12 +17,17 @@ import {
     
 } from './pageCounters.js';
 
-// let page = 1;
 let infiniteScroll;
 
+headerMenuListHome.addEventListener('click', () => {
+    location.hash = '';
+});
 headerTitle.addEventListener('click', () => {
     location.hash = '';
 });
+// headerMenuListFavorites.addEventListener('click', () => {
+//     location.hash = '#favorites';
+// });
 arrowBack.addEventListener('click', () => {
     // event.preventDefault();
     // location.hash = '';
@@ -86,6 +91,7 @@ function homePage() {
 
     // Header
     headerSection.classList.remove('inactive');
+    headerMenuListContainer.classList.add("inactive");
     arrowBack.classList.add('inactive');
 
     // Search
@@ -116,6 +122,7 @@ function trendsPage() {
 
     // Header
     headerSection.classList.remove('inactive');
+    headerMenuListContainer.classList.add("inactive");
     arrowBack.classList.remove('inactive');
 
     // Search
@@ -153,8 +160,8 @@ function searchPage() {
 
     // Header
     headerSection.classList.remove('inactive');
+    headerMenuListContainer.classList.add("inactive");
     arrowBack.classList.remove('inactive');
-    // searchForm.classList.remove('inactive');
 
     // Search
     searchSection.classList.remove('inactive');
@@ -187,8 +194,11 @@ function movieDetailsPage() {
 
     // Header
     headerSection.classList.add('inactive');
+    headerMenuListContainer.classList.add("inactive");
     arrowBack.classList.remove('inactive');
-    searchForm.classList.add('inactive');
+
+    // Search
+    searchSection.classList.add('inactive');
 
     // Trending movies preview
     trendingPreviewSection.classList.add('inactive');
@@ -233,7 +243,6 @@ function genrePage() {
     headerSection.classList.remove('inactive');
     headerMenuListContainer.classList.add("inactive");
     arrowBack.classList.remove('inactive');
-    // searchForm.classList.add('inactive');
 
     // Search
     searchSection.classList.add('inactive');

@@ -12,7 +12,8 @@ const favoritesSection = $("favorites");
 // Containers & Lists
 const headerMenuListContainer = qs(".header-menu-list-container");
 const headerMenuList = qs(".header-menu-list");
-const searchForm = qs(".search-form");
+const headerMenuListHome = qs(".header-menu-list-home");
+const headerMenuListFavorites = qs(".header-menu-list-favorites");
 const trendingPreviewMovieList = qs(".trending-preview-movie-list");
 const movieDetailImgContainer = qs(".movie-detail-img-container");
 const movieDetailInfoContainer = qs(".movie-detail-info-container");
@@ -27,6 +28,7 @@ const headerTitle = qs(".header-title");
 const searchFormInput = $("seachFormInput");
 const searchFormBtn = $('searchBtn');
 const trendingPreviewViewAll = qs(".trending-preview-view-all");
+const movieFavoriteBtn = qs(".movie-favorite-button");
 
 //Generic
 const genericList = $("genericList");

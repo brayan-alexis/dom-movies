@@ -38,6 +38,21 @@ const api = axios.create({
     },
 });
 
+// Toggle menu when the user clicks on the menu icon
+svgElement.addEventListener('click', () => {
+    svgElement.classList.add('jello-horizontal'); // Add the animation class
+    headerMenuListContainer.classList.toggle("inactive"); // Toggle the class to show the menu
+    headerMenuListContainer.classList.toggle("scale-up-vertical-top");
+    
+    const body = document.querySelector("body");
+    body.style.overflowY = body.style.overflowY === "hidden" ? "scroll" : "hidden"; // Toggle the scroll
+
+    // Remove the animation class after 0.5 seconds
+    setTimeout(() => {
+        svgElement.classList.remove('jello-horizontal');
+    }, 500); // 500 milliseconds = 0.5 seconds
+});
+
 const favoriteMovies = JSON.parse(localStorage.getItem("favoriteMovies")) || [];
 function toggleFavoriteMovie(movie) {
     const movieIndex = favoriteMovies.findIndex((favoriteMovie) => favoriteMovie.id === movie.id);
@@ -53,18 +68,6 @@ function getFavoriteMovies() {
     const favoriteMovies = JSON.parse(localStorage.getItem("favoriteMovies")) || [];
     updateGenericMoviesList(favoriteMovies, favoritesList);
 }
-
-// Toggle menu when the user clicks on the menu icon
-svgElement.addEventListener('click', () => {
-    svgElement.classList.add('jello-horizontal'); // Add the animation class
-    headerMenuListContainer.classList.toggle("inactive"); // Toggle the class to show the menu
-    headerMenuListContainer.classList.toggle("scale-up-vertical-top");
-
-    // Remove the animation class after 0.5 seconds
-    setTimeout(() => {
-        svgElement.classList.remove('jello-horizontal');
-    }, 500); // 500 milliseconds = 0.5 seconds
-});
 
 // Utils
 async function updateTrendingMoviesPreview(movies) {
@@ -142,6 +145,7 @@ function fillTrendingMoviesPreview(movies) {
             movieFavBtn.classList.toggle("movie-fav-btn--active");
             toggleFavoriteMovie(movie);
             getFavoriteMovies();
+            movieFavoriteBtn.classList.toggle("movie-favorite-button--active");
         });
 
         lazyLoading.observe(movieImg); // Lazy loading
@@ -189,6 +193,7 @@ function fillGenericMoviesList(movies, parentElement) {
             toggleFavoriteMovie(movie);
             getFavoriteMovies();
             getTrendingMoviesPreview();
+            movieFavoriteBtn.classList.toggle("movie-favorite-button--active");
         });
 
         lazyLoading.observe(movieImg); // Lazy loading
@@ -442,6 +447,17 @@ async function getMovieById(movieId) {
     movieDetailInfoContainer.appendChild(movieDetailOverview);
 
     getRelatedMovies(movieId);
+
+    // Favorites
+    movieFavoriteBtn.classList.add("movie-favorite-button");
+    favoriteMovies[favoriteMovies.findIndex((favoriteMovie) => favoriteMovie.id === movie.id)]
+        ? movieFavoriteBtn.classList.add("movie-favorite-button--active") : []; // Check if the movie is in the favorites list
+    movieFavoriteBtn.addEventListener('click', () => {
+        movieFavoriteBtn.classList.toggle("movie-favorite-button--active");
+        toggleFavoriteMovie(movie);
+        getFavoriteMovies();
+        // getTrendingMoviesPreview();
+    } );
 }
 
 async function getRelatedMovies(movieId) {
