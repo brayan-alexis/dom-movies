@@ -11,6 +11,9 @@ import {
 } from './pageCounters.js';
 export { 
     getTrendingMoviesPreview, 
+    getPopularMovies,
+    getTopRatedMovies,
+    getUpcomingMovies,
     getGenresPreview,
     getTrendingMovies, 
     getMoviesByGenre, 
@@ -20,7 +23,6 @@ export {
     getPaginatedBySearch,
     getPaginatedMoviesByGenre,
     getFavoriteMovies,
-    getPopularMovies,
 };
 
 window.addEventListener('load', getGenresInMenu, false); // Load the genres in the menu
@@ -383,6 +385,22 @@ async function getPopularMovies() {
     // console.log({data, movies});
 
     updateGenericMoviesList(movies, popularList);
+}
+
+async function getTopRatedMovies() {
+    const { data } = await api("/movie/top_rated");
+    const movies = data.results;
+    // console.log({data, movies});
+
+    updateGenericMoviesList(movies, topRatedList);
+}
+
+async function getUpcomingMovies() {
+    const { data } = await api("/movie/upcoming");
+    const movies = data.results;
+    // console.log({data, movies});
+
+    updateGenericMoviesList(movies, upcomingList);
 }
 
 async function getMoviesByGenre(genreId, genreTitle) {

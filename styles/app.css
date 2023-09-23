@@ -185,7 +185,9 @@ body {
 
 /* Trending */
 .trending-preview-container,
-.popular-container {
+.popular-container,
+.top-rated-container, 
+.upcoming-container {
     margin: 0.5rem;
     padding: 1rem 1rem 0 1rem;
 }
@@ -211,7 +213,9 @@ body {
 }
 .trending-preview-movie-list,
 .popular-list,
-.favorites-list {
+.top-rated-list,
+.favorites-list,
+.upcoming-list {
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
@@ -225,6 +229,8 @@ body {
 }
 .trending-preview-movie-list .movie-card,
 .popular-list .movie-card,
+.top-rated-list .movie-card,
+.upcoming-list .movie-card,
 .favorites-list .movie-card {
     margin: 0 1rem 0 0;
     padding: 0;

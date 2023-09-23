@@ -7,6 +7,8 @@ const trendingPreviewSection = $("trendingPreview");
 const searchSection = qs(".search-section");
 const genresPreviewSection = $("genresPreview");
 const popularSection = $("popular");
+const topRatedSection = $("topRated");
+const upcomingSection = $("upcoming");
 const movieDetailSection = qs(".movie-detail-container");
 const favoritesSection = $("favorites");
 
@@ -17,6 +19,8 @@ const headerMenuListHome = qs(".header-menu-list-home");
 const headerMenuListFavorites = qs(".header-menu-list-favorites");
 const trendingPreviewMovieList = qs(".trending-preview-movie-list");
 const popularList = qs(".popular-list");
+const topRatedList = qs(".top-rated-list");
+const upcomingList = qs(".upcoming-list")
 const movieDetailImgContainer = qs(".movie-detail-img-container");
 const movieDetailInfoContainer = qs(".movie-detail-info-container");
 const genresContainer = qs(".genres-container");

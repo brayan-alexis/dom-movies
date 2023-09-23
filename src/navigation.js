@@ -1,5 +1,8 @@
 import { 
     getTrendingMoviesPreview, 
+    getPopularMovies,
+    getTopRatedMovies,
+    getUpcomingMovies,
     getGenresPreview,
     getTrendingMovies, 
     getMoviesByGenre, 
@@ -9,7 +12,6 @@ import {
     getPaginatedBySearch,
     getPaginatedMoviesByGenre,
     getFavoriteMovies,
-    getPopularMovies,
 } from './main.js';
 import {
     setTrendingPageCounter,
@@ -73,6 +75,9 @@ function navigator() {
     location.hash.startsWith('#movie=')    ? movieDetailsPage() :
     location.hash.startsWith('#genre=')    ? genrePage()        :
     location.hash.startsWith('#popular')   ? popularPage()      :
+    location.hash.startsWith('#topRated')  ? topRatedPage()     :
+    location.hash.startsWith('#upcoming')  ? upcomingPage()     :
+    location.hash.startsWith('#favorites') ? favoritesPage()    :
     homePage();
 
     document.body.scrollTop = 0;
@@ -104,6 +109,12 @@ function homePage() {
     // Popular
     popularSection.classList.remove('inactive');
 
+    // Top rated
+    topRatedSection.classList.remove('inactive');
+
+    // Upcoming
+    upcomingSection.classList.remove('inactive');
+
     // Favorites
     favoritesSection.classList.remove('inactive');
 
@@ -120,6 +131,8 @@ function homePage() {
     getGenresPreview();
     getFavoriteMovies();
     getPopularMovies();
+    getTopRatedMovies();
+    getUpcomingMovies();
 }
 
 function trendsPage() {
@@ -138,6 +151,9 @@ function trendsPage() {
 
     // Popular
     popularSection.classList.add('inactive');
+
+    // Top rated
+    topRatedSection.classList.add('inactive');
 
     // Favorites
     favoritesSection.classList.add('inactive');
@@ -180,6 +196,9 @@ function searchPage() {
     // Popular
     popularSection.classList.add('inactive');
 
+    // Top rated
+    topRatedSection.classList.add('inactive');
+
     // Favorites
     favoritesSection.classList.add('inactive');
 
@@ -216,6 +235,9 @@ function movieDetailsPage() {
 
     // Popular
     popularSection.classList.add('inactive');
+
+    // Top rated
+    topRatedSection.classList.add('inactive');
 
     // Favorites
     favoritesSection.classList.add('inactive');
@@ -267,6 +289,9 @@ function genrePage() {
     // Popular
     popularSection.classList.add('inactive');
 
+    // Top rated
+    topRatedSection.classList.add('inactive');
+
     // Favorites
     favoritesSection.classList.add('inactive');
 
@@ -287,35 +312,10 @@ function genrePage() {
 }
 
 function popularPage() {
-    console.log('Popular page');
+}
 
-    // Header
-    headerSection.classList.remove('inactive');
-    headerMenuListContainer.classList.add("inactive");
-    arrowBack.classList.remove('inactive');
+function topRatedPage() {
+}
 
-    // Search
-    searchSection.classList.add('inactive');
-    
-    // Trending movies preview
-    trendingPreviewSection.classList.add('inactive');
-
-    // Popular
-    popularSection.classList.add('inactive');
-
-    // Favorites
-    favoritesSection.classList.add('inactive');
-
-    // Movie details
-    movieDetailSection.classList.add('inactive');
-
-    // Genres preview
-    genresPreviewSection.classList.add('inactive');
-
-    // Generic
-    genericList.classList.remove('inactive');
-
-    getTrendingMovies();
-    
-    infiniteScroll = getPaginatedTrendingMovies;
+function upcomingPage() {
 }
