@@ -31,6 +31,7 @@ const favoritesList = qs(".favorites-list");
 // Elements
 const svgElement = qs(".menuSVG");
 const headerTitle = qs(".header-title");
+const headerFavorites = qs(".header-favorites");
 const searchFormInput = $("seachFormInput");
 const searchFormBtn = $('searchBtn');
 const trendingPreviewViewAll = qs(".trending-preview-view-all");

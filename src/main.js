@@ -14,6 +14,7 @@ export {
     getPopularMovies,
     getTopRatedMovies,
     getUpcomingMovies,
+    getFavoriteMovies,
     getGenresPreview,
     getTrendingMovies, 
     getMoviesByGenre, 
@@ -22,7 +23,7 @@ export {
     getPaginatedTrendingMovies,
     getPaginatedBySearch,
     getPaginatedMoviesByGenre,
-    getFavoriteMovies,
+    getFavoriteMoviesFromLocalStorage,
 };
 
 window.addEventListener('load', getGenresInMenu, false); // Load the genres in the menu
@@ -68,7 +69,7 @@ function toggleFavoriteMovie(movie) {
     localStorage.setItem("favoriteMovies", JSON.stringify(favoriteMovies));
 }
 
-function getFavoriteMovies() {
+function getFavoriteMoviesFromLocalStorage() {
     const favoriteMovies = JSON.parse(localStorage.getItem("favoriteMovies")) || [];
     updateGenericMoviesList(favoriteMovies, favoritesList);
 }
@@ -163,7 +164,7 @@ function fillTrendingMoviesPreview(movies) {
             e.stopPropagation();
             movieFavBtn.classList.toggle("movie-fav-btn--active");
             toggleFavoriteMovie(movie);
-            getFavoriteMovies();
+            getFavoriteMoviesFromLocalStorage();
             movieFavoriteBtn.classList.toggle("movie-favorite-button--active");
         });
 
@@ -251,7 +252,7 @@ function fillGenericMoviesList(movies, parentElement) {
             e.stopPropagation();
             movieFavBtn.classList.toggle("movie-fav-btn--active");
             toggleFavoriteMovie(movie);
-            getFavoriteMovies();
+            getFavoriteMoviesFromLocalStorage();
             getTrendingMoviesPreview();
             movieFavoriteBtn.classList.toggle("movie-favorite-button--active");
         });
@@ -403,6 +404,14 @@ async function getUpcomingMovies() {
     updateGenericMoviesList(movies, upcomingList);
 }
 
+async function getFavoriteMovies() {
+    // Get the favorite movies from the local storage or an empty array if there are no favorite movies
+    const favoriteMovies = JSON.parse(localStorage.getItem("favoriteMovies")) || [];
+    updateGenericMoviesList(favoriteMovies, genericMovieList);
+
+    genericMovieTitle.textContent = "My Favorites";
+}
+
 async function getMoviesByGenre(genreId, genreTitle) {
     const { data } = await api('/discover/movie', {
         params: {
@@ -539,7 +548,7 @@ async function getMovieById(movieId) {
     movieFavoriteBtn.addEventListener('click', () => {
         movieFavoriteBtn.classList.toggle("movie-favorite-button--active");
         toggleFavoriteMovie(movie);
-        getFavoriteMovies();
+        getFavoriteMoviesFromLocalStorage();
         // getTrendingMoviesPreview();
     } );
 }

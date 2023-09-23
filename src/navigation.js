@@ -3,6 +3,7 @@ import {
     getPopularMovies,
     getTopRatedMovies,
     getUpcomingMovies,
+    getFavoriteMovies,
     getGenresPreview,
     getTrendingMovies, 
     getMoviesByGenre, 
@@ -11,7 +12,7 @@ import {
     getPaginatedTrendingMovies,
     getPaginatedBySearch,
     getPaginatedMoviesByGenre,
-    getFavoriteMovies,
+    getFavoriteMoviesFromLocalStorage,
 } from './main.js';
 import {
     setTrendingPageCounter,
@@ -28,9 +29,9 @@ headerMenuListHome.addEventListener('click', () => {
 headerTitle.addEventListener('click', () => {
     location.hash = '';
 });
-// headerMenuListFavorites.addEventListener('click', () => {
-//     location.hash = '#favorites';
-// });
+headerMenuListFavorites.addEventListener('click', () => {
+    location.hash = '#favorites';
+});
 arrowBack.addEventListener('click', () => {
     // event.preventDefault();
     // location.hash = '';
@@ -129,10 +130,11 @@ function homePage() {
 
     getTrendingMoviesPreview();
     getGenresPreview();
-    getFavoriteMovies();
+    getFavoriteMoviesFromLocalStorage();
     getPopularMovies();
     getTopRatedMovies();
     getUpcomingMovies();
+    getFavoriteMovies();
 }
 
 function trendsPage() {
@@ -154,6 +156,9 @@ function trendsPage() {
 
     // Top rated
     topRatedSection.classList.add('inactive');
+
+    // Upcoming
+    upcomingSection.classList.add('inactive');
 
     // Favorites
     favoritesSection.classList.add('inactive');
@@ -199,6 +204,9 @@ function searchPage() {
     // Top rated
     topRatedSection.classList.add('inactive');
 
+    // Upcoming
+    upcomingSection.classList.add('inactive');
+
     // Favorites
     favoritesSection.classList.add('inactive');
 
@@ -238,6 +246,9 @@ function movieDetailsPage() {
 
     // Top rated
     topRatedSection.classList.add('inactive');
+
+    // Upcoming
+    upcomingSection.classList.add('inactive');
 
     // Favorites
     favoritesSection.classList.add('inactive');
@@ -292,6 +303,9 @@ function genrePage() {
     // Top rated
     topRatedSection.classList.add('inactive');
 
+    // Upcoming
+    upcomingSection.classList.add('inactive');
+
     // Favorites
     favoritesSection.classList.add('inactive');
 
@@ -318,4 +332,42 @@ function topRatedPage() {
 }
 
 function upcomingPage() {
+}
+
+function favoritesPage() {
+    console.log('Favorites page');
+
+    // Header
+    headerSection.classList.remove('inactive');
+    headerMenuListContainer.classList.add("inactive");
+    arrowBack.classList.remove('inactive');
+
+    // Search
+    searchSection.classList.add('inactive');
+    
+    // Trending movies preview
+    trendingPreviewSection.classList.add('inactive');
+
+    // Popular
+    popularSection.classList.add('inactive');
+
+    // Top rated
+    topRatedSection.classList.add('inactive');
+
+    // Upcoming
+    upcomingSection.classList.add('inactive');
+
+    // Favorites
+    favoritesSection.classList.add('inactive');
+
+    // Movie details
+    movieDetailSection.classList.add('inactive');
+
+    // Genres preview
+    genresPreviewSection.classList.add('inactive');
+
+    // Generic
+    genericList.classList.remove('inactive');
+
+    getFavoriteMovies();
 }
