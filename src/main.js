@@ -20,6 +20,7 @@ export {
     getPaginatedBySearch,
     getPaginatedMoviesByGenre,
     getFavoriteMovies,
+    getPopularMovies,
 };
 
 window.addEventListener('load', getGenresInMenu, false); // Load the genres in the menu
@@ -35,6 +36,7 @@ const api = axios.create({
     },
     params: {
         api_key: API_KEY,
+        // language: navigator.language || 'en-US',
     },
 });
 
@@ -84,6 +86,21 @@ async function updateTrendingMoviesPreview(movies) {
         fillTrendingMoviesPreview(movies);
     }
 }
+
+// async function updatePopularMovies(movies) {
+//     // Check if the popular movies list is empty
+//     const existingMovieCards = Array.from(popularList.children);
+//     if (!existingMovieCards.length) {
+//         fillPopularMovies(movies);
+//     } else {
+//         // Remove the previous popular movies
+//         existingMovieCards.forEach((movieCard) => {
+//             movieCard.remove();
+//         });
+//         // Fill the popular movies list with the new movies
+//         fillPopularMovies(movies);
+//     }
+// }
 
 async function updateGenericMoviesList(movies, parentElement, clean = true) {
     // If clean is true, remove the previous movies and fill the list with the new movies. 
@@ -166,6 +183,47 @@ function fillTrendingMoviesPreview(movies) {
         trendingPreviewMovieList.appendChild(movieCard);
     });
 }
+
+// function fillPopularMovies(movies) {
+//     movies.forEach((movie) => {
+//         const movieCard = ce("div");
+//         movieCard.classList.add("movie-card");
+
+//         const movieImg = ce("img");
+//         movieImg.classList.add("movie-img");
+//         movieImg.alt = movie.title;
+//         movieImg.setAttribute("data-src", `https://image.tmdb.org/t/p/w300${movie.poster_path}`); //Add data-src attribute to the image
+//         movieImg.addEventListener('click', () => {
+//             location.hash = `#movie=${movie.id}`;
+//         });
+//         movieImg.addEventListener('error', () => {
+//             handleImageError(movieImg);
+//         });
+
+//         const movieFavBtn = ce("button");
+//         movieFavBtn.classList.add("movie-fav-btn");
+//         favoriteMovies[favoriteMovies.findIndex((favoriteMovie) => favoriteMovie.id === movie.id)]
+//             ? movieFavBtn.classList.add("movie-fav-btn--active") : []; // Check if the movie is in the favorites list
+//         movieFavBtn.addEventListener('click', (e) => {
+//             e.stopPropagation();
+//             movieFavBtn.classList.toggle("movie-fav-btn--active");
+//             toggleFavoriteMovie(movie);
+//             getFavoriteMovies();
+//             movieFavoriteBtn.classList.toggle("movie-favorite-button--active");
+//         });
+
+//         lazyLoading.observe(movieImg); // Lazy loading
+//         movieCard.appendChild(movieImg);
+
+//         const movieTitle = ce("h3");
+//         movieTitle.classList.add("movie-title");
+//         movieTitle.textContent = movie.title;
+//         movieCard.appendChild(movieTitle);
+        
+//         movieCard.appendChild(movieFavBtn);
+//         popularList.appendChild(movieCard);
+//     });
+// }
 
 function fillGenericMoviesList(movies, parentElement) {
     movies.forEach((movie) => {
@@ -317,6 +375,14 @@ async function getPaginatedTrendingMovies() {
         updateGenericMoviesList(movies, genericMovieList, {clean: getTrendingPageCounter() == 1});
     }
     // console.log(`trendingPageCounter: ${getTrendingPageCounter()}`);
+}
+
+async function getPopularMovies() {
+    const { data } = await api("/movie/popular");
+    const movies = data.results;
+    // console.log({data, movies});
+
+    updateGenericMoviesList(movies, popularList);
 }
 
 async function getMoviesByGenre(genreId, genreTitle) {
