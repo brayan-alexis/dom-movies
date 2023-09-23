@@ -371,6 +371,7 @@ body {
 /* Related movies */
 .related-movies-container {
     padding: 1rem;
+    margin: 0 0 2rem 0;
     overflow-x: scroll; /* Agrega desplazamiento horizontal */
     white-space: nowrap; /* Evita que los elementos se envuelvan */
 }
