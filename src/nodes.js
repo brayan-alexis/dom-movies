@@ -39,6 +39,7 @@ const favoritesViewAll = qs(".favorites-view-all");
 const movieFavoriteBtn = qs(".movie-favorite-button");
 
 //Generic
+const body = document.querySelector("body");
 const genericList = $("genericList");
 const genericMovieList = qs(".generic-movie-list");
 const genericMovieTitle = qs(".generic-movie-title");

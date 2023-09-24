@@ -49,7 +49,7 @@ svgElement.addEventListener('click', () => {
     headerMenuListContainer.classList.toggle("inactive"); // Toggle the class to show the menu
     headerMenuListContainer.classList.toggle("scale-up-vertical-top");
     
-    const body = document.querySelector("body");
+    // const body = document.querySelector("body");
     body.style.overflowY = body.style.overflowY === "hidden" ? "scroll" : "hidden"; // Toggle the scroll
 
     // Remove the animation class after 0.5 seconds
@@ -250,6 +250,7 @@ async function getGenresInMenu() {
         genreListItem.setAttribute("id", genre.id);
         genreListItem.addEventListener('click', () => {
             location.hash = `#genre=${genre.id}_${genre.name}`;
+            body.style.overflowY = body.style.overflowY === "hidden" ? "scroll" : "hidden"; // Toggle the scroll
         });
         genreList.appendChild(genreListItem);
 
