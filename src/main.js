@@ -77,6 +77,7 @@ function toggleFavoriteMovie(movie) {
 function getFavoriteMoviesFromLocalStorage() {
     const favoriteMovies = JSON.parse(localStorage.getItem("favoriteMovies")) || [];
     updateGenericMoviesList(favoriteMovies, favoritesList);
+    updateGenericMoviesList(favoriteMovies, genericMovieList);
 }
 
 // Utils
@@ -153,9 +154,9 @@ function fillTrendingMoviesPreview(movies) {
         movieFavBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             movieFavBtn.classList.toggle("movie-fav-btn--active");
+            movieFavoriteBtn.classList.toggle("movie-favorite-button--active");
             toggleFavoriteMovie(movie);
             getFavoriteMoviesFromLocalStorage();
-            movieFavoriteBtn.classList.toggle("movie-favorite-button--active");
         });
 
         lazyLoading.observe(movieImg); // Lazy loading
@@ -200,10 +201,10 @@ function fillGenericMoviesList(movies, parentElement) {
         movieFavBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             movieFavBtn.classList.toggle("movie-fav-btn--active");
+            movieFavoriteBtn.classList.toggle("movie-favorite-button--active");
             toggleFavoriteMovie(movie);
             getFavoriteMoviesFromLocalStorage();
             getTrendingMoviesPreview();
-            movieFavoriteBtn.classList.toggle("movie-favorite-button--active");
         });
 
         lazyLoading.observe(movieImg); // Lazy loading

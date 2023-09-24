@@ -32,8 +32,8 @@ headerMenuListFavorites.addEventListener('click', () => {
 });
 headerTitle.addEventListener('click', () => {
     toggleBodyOverflow();
-    headerMenuListContainer.classList.toggle("inactive");
-    location.hash = '';
+    headerMenuListContainer.classList.add("inactive");
+    location.hash = '/#';
 });
 headerFavorites.addEventListener('click', () => {
     toggleBodyOverflow();
@@ -53,7 +53,7 @@ arrowBack.addEventListener('click', () => {
         history.back();
     } else {
         // If it doesn't belong to the same application, redirect to the application's home
-        window.location.href = '/'; // Replace '/' with the URL of your home page
+        window.location.href = '/#'; // Replace '/' with the URL of your home page
     }
 });
 searchFormBtn.addEventListener('click', (event) => {
