@@ -13,6 +13,7 @@ import {
     getPaginatedBySearch,
     getPaginatedMoviesByGenre,
     getFavoriteMoviesFromLocalStorage,
+    toggleBodyOverflow,
 } from './main.js';
 import {
     setTrendingPageCounter,
@@ -30,10 +31,12 @@ headerMenuListFavorites.addEventListener('click', () => {
     location.hash = '#favorites';
 });
 headerTitle.addEventListener('click', () => {
+    toggleBodyOverflow();
     headerMenuListContainer.classList.toggle("inactive");
     location.hash = '';
 });
 headerFavorites.addEventListener('click', () => {
+    toggleBodyOverflow();
     location.hash = '#favorites';
 });
 arrowBack.addEventListener('click', () => {

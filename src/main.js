@@ -24,6 +24,7 @@ export {
     getPaginatedBySearch,
     getPaginatedMoviesByGenre,
     getFavoriteMoviesFromLocalStorage,
+    toggleBodyOverflow,
 };
 
 window.addEventListener('load', getGenresInMenu, false); // Load the genres in the menu
@@ -49,14 +50,18 @@ svgElement.addEventListener('click', () => {
     headerMenuListContainer.classList.toggle("inactive"); // Toggle the class to show the menu
     headerMenuListContainer.classList.toggle("scale-up-vertical-top");
     
-    // const body = document.querySelector("body");
-    body.style.overflowY = body.style.overflowY === "hidden" ? "scroll" : "hidden"; // Toggle the scroll
+    toggleBodyOverflow();
 
     // Remove the animation class after 0.5 seconds
     setTimeout(() => {
         svgElement.classList.remove('jello-horizontal');
     }, 500); // 500 milliseconds = 0.5 seconds
 });
+
+function toggleBodyOverflow() {
+    const body = document.querySelector("body");
+    body.style.overflowY = body.style.overflowY === "hidden" ? "scroll" : "hidden";
+}
 
 const favoriteMovies = JSON.parse(localStorage.getItem("favoriteMovies")) || [];
 function toggleFavoriteMovie(movie) {
@@ -250,7 +255,7 @@ async function getGenresInMenu() {
         genreListItem.setAttribute("id", genre.id);
         genreListItem.addEventListener('click', () => {
             location.hash = `#genre=${genre.id}_${genre.name}`;
-            body.style.overflowY = body.style.overflowY === "hidden" ? "scroll" : "hidden"; // Toggle the scroll
+            toggleBodyOverflow();
         });
         genreList.appendChild(genreListItem);
 
