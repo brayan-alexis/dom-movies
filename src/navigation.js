@@ -33,7 +33,7 @@ headerMenuListFavorites.addEventListener('click', () => {
 headerTitle.addEventListener('click', () => {
     toggleBodyOverflow();
     headerMenuListContainer.classList.add("inactive");
-    location.hash = '/#';
+    location.hash = '/#home';
 });
 headerFavorites.addEventListener('click', () => {
     toggleBodyOverflow();
@@ -41,9 +41,8 @@ headerFavorites.addEventListener('click', () => {
 });
 arrowBack.addEventListener('click', () => {
     // event.preventDefault();
-    // location.hash = '';
+    // location.hash = '';+
 
-    console.log('hi');
     // Get the URL of the previous page
     const previousUrl = document.referrer;
 
@@ -53,7 +52,7 @@ arrowBack.addEventListener('click', () => {
         history.back();
     } else {
         // If it doesn't belong to the same application, redirect to the application's home
-        window.location.href = '/#'; // Replace '/' with the URL of your home page
+        window.location.href = '/#home'; // Replace '/' with the URL of your home page
     }
 });
 searchFormBtn.addEventListener('click', (event) => {
@@ -279,7 +278,8 @@ function movieDetailsPage() {
     // Check if the movie details are empty and if so, get the data from the API
     const childrenMovieDetails = Array.from(movieDetailInfoContainer.children);
     const childrenMovieImg = Array.from(movieDetailImgContainer.children);
-    if (!childrenMovieDetails.length && !childrenMovieImg.length){
+    const childrenFavoriteContainer = Array.from(movieFavoriteContainer.children);
+    if (!childrenMovieDetails.length && !childrenMovieImg.length && !childrenFavoriteContainer.length){
         getMovieById(movieId);
     } else {
         // Remove the movie details from the previous movie
@@ -287,6 +287,9 @@ function movieDetailsPage() {
             child.remove();
         });
         childrenMovieImg.forEach((child) => {
+            child.remove();
+        });
+        childrenFavoriteContainer.forEach((child) => {
             child.remove();
         });
         // Get the movie details from the new movie

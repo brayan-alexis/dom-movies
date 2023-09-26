@@ -26,6 +26,7 @@ const genresContainer = qs(".genres-container");
 const relatedMoviesList = qs(".related-movies-list");
 const arrowBack = qs(".arrow-back-container");
 const favoritesList = qs(".favorites-list");
+const movieFavoriteContainer = qs(".movie-favorite-container");
 
 // Elements
 const svgElement = qs(".menuSVG");
@@ -36,7 +37,7 @@ const searchFormInput = $("seachFormInput");
 const searchFormBtn = $('searchBtn');
 const trendingPreviewViewAll = qs(".trending-preview-view-all");
 const favoritesViewAll = qs(".favorites-view-all");
-const movieFavoriteBtn = qs(".movie-favorite-button");
+// const movieFavoriteBtn = qs(".movie-favorite-button");
 
 //Generic
 const body = document.querySelector("body");

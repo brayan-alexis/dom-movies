@@ -72,12 +72,12 @@ function toggleFavoriteMovie(movie) {
         favoriteMovies.splice(movieIndex, 1);
     }
     localStorage.setItem("favoriteMovies", JSON.stringify(favoriteMovies));
+    // console.log(favoriteMovies);
 }
 
 function getFavoriteMoviesFromLocalStorage() {
     const favoriteMovies = JSON.parse(localStorage.getItem("favoriteMovies")) || [];
     updateGenericMoviesList(favoriteMovies, favoritesList);
-    updateGenericMoviesList(favoriteMovies, genericMovieList);
 }
 
 // Utils
@@ -97,13 +97,8 @@ async function updateTrendingMoviesPreview(movies) {
 }
 
 async function updateGenericMoviesList(movies, parentElement, clean = true) {
-    // If clean is true, remove the previous movies and fill the list with the new movies. 
-    // If clean is false, just fill the list with the new movies
-    // console.log(`trendingPageCounter: ${getTrendingPageCounter()}`);
-    // console.log(`genrePageCounter: ${getGenrePageCounter()}`);
-    // console.log(`searchPageCounter: ${getSearchPageCounter()}`);
-    console.log('Is needed to clean the list?');
-    console.log(clean);
+    // console.log('Is needed to clean the list?');
+    // console.log(clean);
 
     if (clean == 1) {
         // Check if the generic movies list is empty
@@ -154,7 +149,7 @@ function fillTrendingMoviesPreview(movies) {
         movieFavBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             movieFavBtn.classList.toggle("movie-fav-btn--active");
-            movieFavoriteBtn.classList.toggle("movie-favorite-button--active");
+            // movieFavoriteBtn.classList.toggle("movie-favorite-button--active");
             toggleFavoriteMovie(movie);
             getFavoriteMoviesFromLocalStorage();
         });
@@ -201,7 +196,7 @@ function fillGenericMoviesList(movies, parentElement) {
         movieFavBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             movieFavBtn.classList.toggle("movie-fav-btn--active");
-            movieFavoriteBtn.classList.toggle("movie-favorite-button--active");
+            // movieFavoriteBtn.classList.toggle("movie-favorite-button--active");
             toggleFavoriteMovie(movie);
             getFavoriteMoviesFromLocalStorage();
             getTrendingMoviesPreview();
@@ -266,7 +261,7 @@ async function getGenresInMenu() {
 async function getTrendingMoviesPreview() {
     const { data } = await api("/trending/movie/day");
     const movies = data.results;
-    console.log({data, movies});
+    // console.log({data, movies});
 
     updateTrendingMoviesPreview(movies);
 }
@@ -497,6 +492,7 @@ async function getMovieById(movieId) {
     getRelatedMovies(movieId);
 
     // Favorites
+    const movieFavoriteBtn = ce("span");
     movieFavoriteBtn.classList.add("movie-favorite-button");
     favoriteMovies[favoriteMovies.findIndex((favoriteMovie) => favoriteMovie.id === movie.id)]
         ? movieFavoriteBtn.classList.add("movie-favorite-button--active") : []; // Check if the movie is in the favorites list
@@ -504,8 +500,10 @@ async function getMovieById(movieId) {
         movieFavoriteBtn.classList.toggle("movie-favorite-button--active");
         toggleFavoriteMovie(movie);
         getFavoriteMoviesFromLocalStorage();
-        // getTrendingMoviesPreview();
-    } );
+    });
+    
+    movieFavoriteContainer.appendChild(movieFavoriteBtn);
+    
 }
 
 async function getRelatedMovies(movieId) {
