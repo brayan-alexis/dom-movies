@@ -24,7 +24,6 @@ export {
     getPaginatedBySearch,
     getPaginatedMoviesByGenre,
     getFavoriteMoviesFromLocalStorage,
-    toggleBodyOverflow,
 };
 
 window.addEventListener('load', getGenresInMenu, false); // Load the genres in the menu
@@ -50,6 +49,8 @@ svgElement.addEventListener('click', () => {
     headerMenuListContainer.classList.toggle("inactive"); // Toggle the class to show the menu
     headerMenuListContainer.classList.toggle("scale-up-vertical-top");
     
+    // body scrool
+    // body.style.overflowY = "hidden"
     toggleBodyOverflow();
 
     // Remove the animation class after 0.5 seconds
@@ -59,7 +60,7 @@ svgElement.addEventListener('click', () => {
 });
 
 function toggleBodyOverflow() {
-    const body = document.querySelector("body");
+    // const body = document.querySelector("body");
     body.style.overflowY = body.style.overflowY === "hidden" ? "scroll" : "hidden";
 }
 
@@ -251,7 +252,8 @@ async function getGenresInMenu() {
         genreListItem.setAttribute("id", genre.id);
         genreListItem.addEventListener('click', () => {
             location.hash = `#genre=${genre.id}_${genre.name}`;
-            toggleBodyOverflow();
+            // toggleBodyOverflow();
+            body.style.overflowY = "scroll";
         });
         genreList.appendChild(genreListItem);
 
