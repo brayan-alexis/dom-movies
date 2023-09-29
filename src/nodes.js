@@ -3,6 +3,7 @@ const qs = (selector) => document.querySelector(selector); // qs = querySelector
 
 // Sections
 const headerSection = $("header");
+const trendingSlider = $("trendingSlider");
 const trendingPreviewSection = $("trendingPreview");
 const searchSection = qs(".search-section");
 const genresPreviewSection = $("genresPreview");
@@ -16,6 +17,7 @@ const favoritesSection = $("favorites");
 const headerMenuListContainer = qs(".header-menu-list-container");
 const headerMenuList = qs(".header-menu-list");
 const headerMenuListHome = qs(".header-menu-list-home");
+const trendingSliderList = qs(".swiper-wrapper");
 const trendingPreviewMovieList = qs(".trending-preview-movie-list");
 const popularList = qs(".popular-list");
 const topRatedList = qs(".top-rated-list");

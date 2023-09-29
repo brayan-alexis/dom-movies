@@ -1,4 +1,5 @@
 import { 
+    getTrendingMoviesSlider,
     getTrendingMoviesPreview, 
     getPopularMovies,
     getTopRatedMovies,
@@ -24,9 +25,11 @@ import {
 let infiniteScroll;
 
 headerMenuListHome.addEventListener('click', () => {
+    body.style.overflowY = "scroll";
     location.hash = '/#home';
 });
 headerMenuListFavorites.addEventListener('click', () => {
+    body.style.overflowY = "scroll";
     location.hash = '#favorites';
 });
 headerTitle.addEventListener('click', () => {
@@ -40,19 +43,21 @@ headerFavorites.addEventListener('click', () => {
 });
 arrowBack.addEventListener('click', () => {
     // event.preventDefault();
-    // location.hash = '';+
+    // location.hash = '';
 
-    // Get the URL of the previous page
-    const previousUrl = document.referrer;
+    history.back();
 
-    // Check if the previous URL belongs to the same application
-    if (previousUrl.includes(location.hostname)) {
-        // If it does, go back to the previous URL
-        history.back();
-    } else {
-        // If it doesn't belong to the same application, redirect to the application's home
-        window.location.href = '/#home'; // Replace '/' with the URL of your home page
-    }
+    // // Get the URL of the previous page
+    // const previousUrl = document.referrer;
+
+    // // Check if the previous URL belongs to the same application
+    // if (previousUrl.includes(location.hostname)) {
+    //     // If it does, go back to the previous URL
+    //     history.back();
+    // } else {
+    //     // If it doesn't belong to the same application, redirect to the application's home
+    //     location.hash = '/#home'; // Replace '/' with the URL of your home page
+    // }
 });
 searchFormBtn.addEventListener('click', (event) => {
     event.preventDefault();
@@ -69,7 +74,6 @@ favoritesViewAll.addEventListener('click', (event) => {
 
 window.addEventListener('load', navigator, false);
 window.addEventListener('hashchange', navigator, false);
-// window.addEventListener('scroll',()=>infiniteScroll(), false);
 window.addEventListener('scroll', infiniteScroll, { passive: false });
 
 function navigator() {
@@ -100,6 +104,10 @@ function navigator() {
     setTrendingPageCounter(1);
     setGenrePageCounter(1);
     setSearchPageCounter(1);
+
+    if (body.style.overflowY === "hidden") {
+        body.style.overflowY = "scroll";
+    }
 }
 
 function homePage() {
@@ -137,13 +145,13 @@ function homePage() {
     // Generic
     genericList.classList.add('inactive');
 
+    getTrendingMoviesSlider();
     getTrendingMoviesPreview();
     getGenresPreview();
     getFavoriteMoviesFromLocalStorage();
     getPopularMovies();
     getTopRatedMovies();
     getUpcomingMovies();
-    // getFavoriteMovies();
 }
 
 function trendsPage() {
@@ -184,13 +192,6 @@ function trendsPage() {
     getTrendingMovies();
     
     infiniteScroll = getPaginatedTrendingMovies;
-
-    // infiniteScroll = () => {
-    //     if (window.scrollY + window.innerHeight >= (document.body.offsetHeight)) {
-    //         page++;
-    //         getTrendingMovies(page);
-    //     }
-    // }
 }
 
 function searchPage() {
@@ -233,7 +234,6 @@ function searchPage() {
     getMoviesBySearch(searchQuery);
 
     infiniteScroll = getPaginatedBySearch(searchQuery);
-    // infiniteScroll = () => getPaginatedBySearch(searchQuery);
 }
 
 function movieDetailsPage() {

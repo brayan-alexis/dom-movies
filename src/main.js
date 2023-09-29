@@ -10,6 +10,7 @@ import {
     getMaxPage,
 } from './pageCounters.js';
 export { 
+    getTrendingMoviesSlider,
     getTrendingMoviesPreview, 
     getPopularMovies,
     getTopRatedMovies,
@@ -49,8 +50,7 @@ svgElement.addEventListener('click', () => {
     headerMenuListContainer.classList.toggle("inactive"); // Toggle the class to show the menu
     headerMenuListContainer.classList.toggle("scale-up-vertical-top");
     
-    // body scrool
-    // body.style.overflowY = "hidden"
+
     toggleBodyOverflow();
 
     // Remove the animation class after 0.5 seconds
@@ -63,6 +63,46 @@ function toggleBodyOverflow() {
     // const body = document.querySelector("body");
     body.style.overflowY = body.style.overflowY === "hidden" ? "scroll" : "hidden";
 }
+
+var swiper = new Swiper(".mySwiper", {
+    effect: "coverflow",
+    grabCursor: true,
+    centeredSlides: true,
+    slidesPerView: "auto",
+    coverflowEffect: {
+        rotate: 50,
+        stretch: 0,
+        depth: 100,
+        modifier: 1,
+        slideShadows: true,
+    },
+    loop: true,
+    autoplay: {
+        delay: 3000,
+        disableOnInteraction: false,
+    },
+    // lazy: true,
+    // preloadImages: false,
+    // lazy: {
+    //     loadPrevNext: true,
+    // },
+    // pagination: {
+    //     el: ".swiper-pagination",
+    // },
+    // navigation: {
+    //     nextEl: ".swiper-button-next",
+    //     prevEl: ".swiper-button-prev",
+    // },
+
+    initialSlide: 3,
+    keyboard: {
+        enabled: true,
+        onlyInViewport: false,
+    },
+    mousewheel: {
+        invert: false,
+    },
+});
 
 const favoriteMovies = JSON.parse(localStorage.getItem("favoriteMovies")) || [];
 function toggleFavoriteMovie(movie) {
@@ -82,6 +122,21 @@ function getFavoriteMoviesFromLocalStorage() {
 }
 
 // Utils
+async function updateTrendingMoviesSlider(movies) {
+    // Check if the trending movies list is empty
+    const existingMovieCards = Array.from(trendingSliderList.children);
+    if (!existingMovieCards.length) {
+        fillTrendingMoviesSlider(movies);
+    } else {
+        // Remove the previous trending movies
+        existingMovieCards.forEach((movieCard) => {
+            movieCard.remove();
+        });
+        // Fill the trending movies list with the new movies
+        fillTrendingMoviesSlider(movies);
+    }
+}
+
 async function updateTrendingMoviesPreview(movies) {
     // Check if the trending movies list is empty
     const existingMovieCards = Array.from(trendingPreviewMovieList.children);
@@ -117,6 +172,59 @@ async function updateGenericMoviesList(movies, parentElement, clean = true) {
     } else {
         fillGenericMoviesList(movies, parentElement);
     }
+}
+
+function fillTrendingMoviesSlider(movies) {
+    movies.forEach((movie) => {
+        const movieCard = ce("div");
+        movieCard.classList.add("swiper-slide");
+        // movieCard.classList.add("movie-card");
+
+        const movieImg = ce("img");
+        // movieImg.classList.add("movie-img");
+        movieImg.classList.add("swiper-lazy");
+        movieImg.classList.add("swiper-lazy-loaded");
+        movieImg.alt = movie.title;
+        // movieImg.setAttribute("data-src", `https://image.tmdb.org/t/p/w500${movie.poster_path}`); //Add data-src attribute to the image
+        movieImg.src = `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
+        movieImg.addEventListener('error', () => {
+            handleImageError(movieImg);
+        });
+
+        const movieFavBtn = ce("button");
+        movieFavBtn.classList.add("movie-fav-btn");
+        favoriteMovies[favoriteMovies.findIndex((favoriteMovie) => favoriteMovie.id === movie.id)]
+            ? movieFavBtn.classList.add("movie-fav-btn--active") : []; // Check if the movie is in the favorites list
+        movieFavBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            movieFavBtn.classList.toggle("movie-fav-btn--active");
+            // movieFavoriteBtn.classList.toggle("movie-favorite-button--active");
+            toggleFavoriteMovie(movie);
+            getFavoriteMoviesFromLocalStorage();
+        });
+
+        // lazyLoading.observe(movieImg); // Lazy loading
+        // movieImg.dataset.movieId = movie.id; // Add the movie ID to the data attribute
+        movieCard.appendChild(movieImg);
+
+        const movieTitle = ce("h3");
+        movieTitle.classList.add("movie-title");
+        movieTitle.textContent = movie.title;
+
+        const movieReleaseDate = ce("p");
+        movieReleaseDate.classList.add("movie-release-date");
+        movieReleaseDate.textContent = `📅 ${movie.release_date}`;
+
+        movieCard.appendChild(movieTitle);
+        movieCard.appendChild(movieReleaseDate);
+        movieCard.appendChild(movieFavBtn);
+        trendingSliderList.appendChild(movieCard);
+
+        // Add onlick event to the movie cards
+        // movieCard.addEventListener('click', () => {
+        //     location.hash = `#movie=${movie.id}`;
+        // });
+    });
 }
 
 function fillTrendingMoviesPreview(movies) {
@@ -258,6 +366,13 @@ async function getGenresInMenu() {
         genreList.appendChild(genreListItem);
 
     });
+}
+
+async function getTrendingMoviesSlider() {
+    const { data } = await api("/trending/movie/day");
+    const movies = data.results;
+
+    updateTrendingMoviesSlider(movies);
 }
 
 async function getTrendingMoviesPreview() {
@@ -440,8 +555,10 @@ function getPaginatedBySearch(searchQuery) {
 }
 
 async function getMovieById(movieId) {
+    // movie with video
     const { data: movie } = await api(`/movie/${movieId}`);
     // console.log(movie);
+    const { data: videos } = await api(`/movie/${movieId}/videos`);
 
     const movieDetailImg = ce("img");
     movieDetailImg.classList.add("movie-detail-img");
@@ -490,6 +607,24 @@ async function getMovieById(movieId) {
     movieDetailOverview.classList.add("movie-detail-overview");
     movieDetailOverview.textContent = movie.overview;
     movieDetailInfoContainer.appendChild(movieDetailOverview);
+
+    const movieDetailVideo = ce("iframe");
+    movieDetailVideo.classList.add("movie-detail-video");
+    movieDetailVideo.src = `https://www.youtube.com/embed/${videos.results[0].key}`;
+    movieDetailVideo.allowFullscreen = true;
+    movieDetailVideo.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+    movieDetailVideo.frameborder = "0";
+    movieDetailVideo.width = "100%";
+    movieDetailVideo.height = "100%";
+    // movieDetailVideo.style.borderRadius = "10px";
+    const movieDetailVideoContainer = ce("div");
+    movieDetailVideoContainer.classList.add("movie-detail-video-container");
+    movieDetailVideoContainer.appendChild(movieDetailVideo);
+    movieDetailVideoContainer.addEventListener('click', () => {
+        location.hash = `#movie=${movie.id}`;
+    }
+    );
+    movieDetailInfoContainer.appendChild(movieDetailVideoContainer);
 
     getRelatedMovies(movieId);
 

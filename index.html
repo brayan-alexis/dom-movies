@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dom Movies</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
     <link rel="stylesheet" href="./styles/app.css">
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
@@ -37,15 +38,20 @@
         <span class="header-favorites">❤️</span>
     </header>
 
-    <section class="search-section inactive">
-        <form class="search-form">
-            <input id="seachFormInput" type="text" class="search-form-input" placeholder="Search">
-            <button id="searchBtn" class="search-form-button">
-                <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="24" height="24" viewBox="0,0,256,256">
-                    <g fill="#ffffff" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><g transform="scale(5.12,5.12)"><path d="M21,3c-9.39844,0 -17,7.60156 -17,17c0,9.39844 7.60156,17 17,17c3.35547,0 6.46094,-0.98437 9.09375,-2.65625l12.28125,12.28125l4.25,-4.25l-12.125,-12.09375c2.17969,-2.85937 3.5,-6.40234 3.5,-10.28125c0,-9.39844 -7.60156,-17 -17,-17zM21,7c7.19922,0 13,5.80078 13,13c0,7.19922 -5.80078,13 -13,13c-7.19922,0 -13,-5.80078 -13,-13c0,-7.19922 5.80078,-13 13,-13z"></path></g></g>
-                </svg>
-            </button>
-        </form>
+    <section id="trendingSlider" class="movies container trending-slider"> 
+        <div class="trending-preview-header">
+            <h2 class="trending-preview-title">Trending Now</h2>
+            <a class="trending-preview-view-all">View All</a>
+        </div>
+
+        <div class="swiper mySwiper">
+            <div class="swiper-wrapper">
+                
+            </div>
+        </div>
+
+        <!-- <button class="swiper-button-next"></button>
+        <button class="swiper-button-prev"></button> -->
     </section>
 
     <section id="trendingPreview" class="trending-preview-container inactive"> 
@@ -83,6 +89,27 @@
         </article>
     </section>
 
+    <section class="search-section inactive">
+        <form class="search-form">
+            <input id="seachFormInput" type="text" class="search-form-input" placeholder="Search">
+            <button id="searchBtn" class="search-form-button">
+                <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="24" height="24" viewBox="0,0,256,256">
+                    <g fill="#ffffff" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><g transform="scale(5.12,5.12)"><path d="M21,3c-9.39844,0 -17,7.60156 -17,17c0,9.39844 7.60156,17 17,17c3.35547,0 6.46094,-0.98437 9.09375,-2.65625l12.28125,12.28125l4.25,-4.25l-12.125,-12.09375c2.17969,-2.85937 3.5,-6.40234 3.5,-10.28125c0,-9.39844 -7.60156,-17 -17,-17zM21,7c7.19922,0 13,5.80078 13,13c0,7.19922 -5.80078,13 -13,13c-7.19922,0 -13,-5.80078 -13,-13c0,-7.19922 5.80078,-13 13,-13z"></path></g></g>
+                </svg>
+            </button>
+        </form>
+    </section>
+
+    <section id="genresPreview" class="genres-preview-container inactive">
+        <h2 class="genres-preview-title">Genres</h2>
+
+        <article class="genres-preview-list">
+            <div class="genres-container">
+                <!-- <h3 id="" class="genre-title">Action</h3> -->
+            </div>
+        </article>
+    </section>
+
     <!-- Start: Popular -->
     <section id="popular" class="popular-container inactive">
         <h2 class="popular-title">Popular</h2>
@@ -109,7 +136,6 @@
             </div>
         </article>
     </section>
-    <!-- End: Popular -->
     
     <!-- Start: Top Rated -->
     <section id="topRated" class="top-rated-container inactive">
@@ -165,15 +191,6 @@
         </article>
     </section>
 
-    <section id="genresPreview" class="genres-preview-container inactive">
-        <h2 class="genres-preview-title">Genres</h2>
-
-        <article class="genres-preview-list">
-            <div class="genres-container">
-                <!-- <h3 id="" class="genre-title">Action</h3> -->
-            </div>
-        </article>
-    </section>
 
     <!-- Start: Generic list -->
     <section id="genericList" class="generic-container inactive">
@@ -194,7 +211,6 @@
             </div>   
         </div>
     </section>
-    <!-- End: Generic list -->
 
     <section id="favorites" class="favorites-container inactive">
         <div class="favorites-header">
@@ -274,6 +290,6 @@
     <script src="./src/nodes.js"></script>
     <script type="module" src="./src/main.js"></script>
     <script type="module" src="./src/navigation.js"></script>
-    <!-- <script src="./src/pageManager.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
 </body>
 </html>
