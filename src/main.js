@@ -64,46 +64,6 @@ function toggleBodyOverflow() {
     body.style.overflowY = body.style.overflowY === "hidden" ? "scroll" : "hidden";
 }
 
-var swiper = new Swiper(".mySwiper", {
-    effect: "coverflow",
-    grabCursor: true,
-    centeredSlides: true,
-    slidesPerView: "auto",
-    coverflowEffect: {
-        rotate: 50,
-        stretch: 0,
-        depth: 100,
-        modifier: 1,
-        slideShadows: true,
-    },
-    loop: true,
-    autoplay: {
-        delay: 3000,
-        disableOnInteraction: false,
-    },
-    // lazy: true,
-    // preloadImages: false,
-    // lazy: {
-    //     loadPrevNext: true,
-    // },
-    // pagination: {
-    //     el: ".swiper-pagination",
-    // },
-    // navigation: {
-    //     nextEl: ".swiper-button-next",
-    //     prevEl: ".swiper-button-prev",
-    // },
-
-    initialSlide: 3,
-    keyboard: {
-        enabled: true,
-        onlyInViewport: false,
-    },
-    mousewheel: {
-        invert: false,
-    },
-});
-
 const favoriteMovies = JSON.parse(localStorage.getItem("favoriteMovies")) || [];
 function toggleFavoriteMovie(movie) {
     const movieIndex = favoriteMovies.findIndex((favoriteMovie) => favoriteMovie.id === movie.id);
@@ -185,8 +145,8 @@ function fillTrendingMoviesSlider(movies) {
         movieImg.classList.add("swiper-lazy");
         movieImg.classList.add("swiper-lazy-loaded");
         movieImg.alt = movie.title;
-        // movieImg.setAttribute("data-src", `https://image.tmdb.org/t/p/w500${movie.poster_path}`); //Add data-src attribute to the image
-        movieImg.src = `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
+        movieImg.setAttribute("data-src", `https://image.tmdb.org/t/p/w500${movie.poster_path}`); //Add data-src attribute to the image
+        // movieImg.src = `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
         movieImg.addEventListener('error', () => {
             handleImageError(movieImg);
         });
@@ -203,27 +163,68 @@ function fillTrendingMoviesSlider(movies) {
             getFavoriteMoviesFromLocalStorage();
         });
 
-        // lazyLoading.observe(movieImg); // Lazy loading
-        // movieImg.dataset.movieId = movie.id; // Add the movie ID to the data attribute
+        lazyLoading.observe(movieImg); // Lazy loading
+        movieImg.dataset.movieId = movie.id; // Add the movie ID to the data attribute
         movieCard.appendChild(movieImg);
 
-        const movieTitle = ce("h3");
-        movieTitle.classList.add("movie-title");
-        movieTitle.textContent = movie.title;
+        // const movieTitle = ce("h3");
+        // movieTitle.classList.add("movie-title");
+        // movieTitle.textContent = movie.title;
 
-        const movieReleaseDate = ce("p");
-        movieReleaseDate.classList.add("movie-release-date");
-        movieReleaseDate.textContent = `📅 ${movie.release_date}`;
+        // const movieReleaseDate = ce("p");
+        // movieReleaseDate.classList.add("movie-release-date");
+        // movieReleaseDate.textContent = `📅 ${movie.release_date}`;
 
-        movieCard.appendChild(movieTitle);
-        movieCard.appendChild(movieReleaseDate);
+        // movieCard.appendChild(movieTitle);
+        // movieCard.appendChild(movieReleaseDate);
         movieCard.appendChild(movieFavBtn);
         trendingSliderList.appendChild(movieCard);
 
         // Add onlick event to the movie cards
-        // movieCard.addEventListener('click', () => {
-        //     location.hash = `#movie=${movie.id}`;
-        // });
+        movieCard.addEventListener('click', () => {
+            location.hash = `#movie=${movie.id}`;
+        });
+    });
+
+    if (swiper) {
+        swiper.destroy();
+    }
+    showMoviesSlider();
+}
+
+let swiper;
+function showMoviesSlider() {
+    console.log('showMoviesSlider');
+    swiper = new Swiper(".mySwiper", {
+        effect: "coverflow",
+        grabCursor: true,
+        centeredSlides: true,
+        slidesPerView: "auto",
+        coverflowEffect: {
+            rotate: 15,
+            stretch: 0,
+            depth: 100,
+            modifier: 1,
+            slideShadows: true,
+            
+        },
+        loop: true,
+        autoplay: {
+            delay: 5000,
+            disableOnInteraction: false,
+        },
+        // lazy: true,
+        // preloadImages: false,
+        // lazy: {
+        //     loadPrevNext: true,
+        // },
+        // pagination: {
+        //     el: ".swiper-pagination",
+        // },
+        // navigation: {
+        //     nextEl: ".swiper-button-next",
+        //     prevEl: ".swiper-button-prev",
+        // },
     });
 }
 

@@ -120,9 +120,12 @@ function homePage() {
 
     // Search
     searchSection.classList.remove('inactive');
+
+    // Trending movies slider
+    trendingSlider.classList.remove('inactive');
     
     // Trending movies preview
-    trendingPreviewSection.classList.remove('inactive');
+    // trendingPreviewSection.classList.remove('inactive');
 
     // Popular
     popularSection.classList.remove('inactive');
@@ -146,7 +149,7 @@ function homePage() {
     genericList.classList.add('inactive');
 
     getTrendingMoviesSlider();
-    getTrendingMoviesPreview();
+    // getTrendingMoviesPreview();
     getGenresPreview();
     getFavoriteMoviesFromLocalStorage();
     getPopularMovies();
@@ -164,9 +167,12 @@ function trendsPage() {
 
     // Search
     searchSection.classList.add('inactive');
+
+    // Trending movies slider
+    trendingSlider.classList.add('inactive');
     
     // Trending movies preview
-    trendingPreviewSection.classList.add('inactive');
+    // trendingPreviewSection.classList.add('inactive');
 
     // Popular
     popularSection.classList.add('inactive');
@@ -205,8 +211,11 @@ function searchPage() {
     // Search
     searchSection.classList.remove('inactive');
 
+    // Trending movies slider
+    trendingSlider.classList.add('inactive');
+
     // Trending movies preview
-    trendingPreviewSection.classList.add('inactive');
+    // trendingPreviewSection.classList.add('inactive');
 
     // Popular
     popularSection.classList.add('inactive');
@@ -247,8 +256,11 @@ function movieDetailsPage() {
     // Search
     searchSection.classList.add('inactive');
 
+    // Trending movies slider
+    trendingSlider.classList.add('inactive');
+
     // Trending movies preview
-    trendingPreviewSection.classList.add('inactive');
+    // trendingPreviewSection.classList.add('inactive');
 
     // Popular
     popularSection.classList.add('inactive');
@@ -306,9 +318,12 @@ function genrePage() {
 
     // Search
     searchSection.classList.add('inactive');
+
+    // Trending movies slider
+    trendingSlider.classList.add('inactive');
     
     // Trending movies preview
-    trendingPreviewSection.classList.add('inactive');
+    // trendingPreviewSection.classList.add('inactive');
 
     // Popular
     popularSection.classList.add('inactive');
@@ -357,9 +372,12 @@ function favoritesPage() {
 
     // Search
     searchSection.classList.add('inactive');
+
+    // Trending movies slider
+    trendingSlider.classList.add('inactive');
     
     // Trending movies preview
-    trendingPreviewSection.classList.add('inactive');
+    // trendingPreviewSection.classList.add('inactive');
 
     // Popular
     popularSection.classList.add('inactive');
